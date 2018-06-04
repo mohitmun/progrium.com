@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>progrium :: Jeff Lindsay</title>
+  <subtitle>Pragmatic idealist. Thought explorer.</subtitle>
+  <id>http://progrium.com/blog</id>
+  <link href="http://progrium.com/blog"/>
+  <link href="http://progrium.com/blog/atom.xml" rel="self"/>
+  <updated>2018-06-04T20:00:33+00:00</updated>
+  <author>
+    <name>Jeff Lindsay</name>
+    <email>progrium+feed@gmail.com</email>
+  </author>
+  <entry>
+    <title>Selling Off My Domains</title>
+    <link rel="alternate" href="http://progrium.com/blog/2017/01/11/domain-auction/"/>
+    <id>http://progrium.com/blog/2017/01/11/domain-auction/</id>
+    <published>2017-01-11T18:00:00+00:00</published>
+    <updated>2018-06-04T20:00:33+00:00</updated>
+    <author>
+      <name>Jeff Lindsay</name>
+    </author>
+    <content type="html">&lt;p&gt;Over the past 16 years I've been registering domains as placeholders for project
+ideas that might need a domain. Too often I revisit an idea and look for a
+better name. And a lot of my ideas lead to more ideas. Also, I have a lot of
+ideas in general. This process has led me to register over 200 domains. I've
+spent roughly $23k in renewals, and as of recently I'm now spending nearly
+$400/mo to keep these mostly unused domains.&lt;/p&gt;
+
+&lt;p&gt;Now I want to sell these domains and I need your help.&lt;/p&gt;
+
+&lt;p&gt;tldr: Check out this &lt;a href="https://docs.google.com/forms/d/e/1FAIpQLSdTpajOpK97l9ALocGMB5_9IFgicvURd8X3hwlVyqcLBi48xw/viewform"&gt;list of all my
+domains&lt;/a&gt;
+and pick ones you might be interested in buying or hearing the story of.&lt;/p&gt;
+
+&lt;h2 id="why"&gt;Why?&lt;/h2&gt;
+
+&lt;p&gt;Last summer &lt;a href="http://gliderlabs.com"&gt;Glider Labs&lt;/a&gt; stopped taking client work. I
+rebooted Glider Labs to focus on innovating in open source. I don't just mean
+building innovative open source software, but innovating &lt;em&gt;for&lt;/em&gt; open source as
+well. Specifically, I'm trying to find a good way to build open source
+sustainably. Although I definitely want to help the greater open source
+community, I'm firstly motivated to find a way for myself to live a life doing
+what I love. Part of that is building great open source building blocks.&lt;/p&gt;
+
+&lt;p&gt;I've been paying my living expenses and a living wage for a staff of one other
+from my savings. The faster we prove our model, the faster we can stop worrying
+about it. Taking client work would help with costs, but after two years doing
+that and juggling open source work, for us it's just not worth it if there is
+another means. And I just happen to have a bit of money saved.&lt;/p&gt;
+
+&lt;p&gt;This means I needed to get efficient! Over the past few months I've been reducing
+costs, both personal and Glider Labs. And this month I finally put together a
+solid financial model to plan with. This is how I found out I pay $400/mo in
+domains.&lt;/p&gt;
+
+&lt;p&gt;So I should get rid of some of them, right?&lt;/p&gt;
+
+&lt;p&gt;Well some of them are pretty good. I used to let some of them expire, but I've
+regretted it every time. So instead, I figure I should try to sell them. And of
+course it clicked, I'd use the money for Glider Labs!&lt;/p&gt;
+
+&lt;h2 id="how"&gt;How?&lt;/h2&gt;
+
+&lt;p&gt;The basic idea is that I want to auction them off. I know how much I've spent on all
+of them, and I'm looking to see if a professional appraisal would be cost
+effective. There's a whole practice of buying and selling domains, but getting
+the highest value is a lot of legwork for each domain. Services that can help I
+don't think are worth it because this is basically just a one-time thing.&lt;/p&gt;
+
+&lt;p&gt;I don't need to get the best value, but for each domain I'd like to at the least
+make back double the amount I've put into them. That gives me a good default
+starting price for auctioning.&lt;/p&gt;
+
+&lt;p&gt;There are auction sites for domains, but (surprise!) they're not free. And I have
+over 200 domains across a wide range of value. So instead I came up with this
+process:&lt;/p&gt;
+
+&lt;p&gt;First, I'm sharing a &lt;a href="https://docs.google.com/forms/d/e/1FAIpQLSdTpajOpK97l9ALocGMB5_9IFgicvURd8X3hwlVyqcLBi48xw/viewform"&gt;list of all my domains&lt;/a&gt;. They're presented in a Google Form
+to collect &lt;em&gt;interest&lt;/em&gt; from my friends and network, including the Glider Labs
+community. I'm going to use this data figure out which ones to focus on.&lt;/p&gt;
+
+&lt;p&gt;Part of what I'd like to do, and a few people have requested, is list the idea I
+had for each domain! It would add context and value to the domains, and it would
+help share some of my ideas I haven't gotten to writing about. However, some of
+these are long stories and, again, there's 200 domains here.&lt;/p&gt;
+
+&lt;p&gt;So this interest survey will also help me pick which ones to write a quick blurb
+about.&lt;/p&gt;
+
+&lt;p&gt;Also! You'll quickly notice these domains are mostly for ideas in the developer
+tool space. Some companies in this space have content strategies that could use
+relevant domains. For example, Auth0 runs &lt;a href="http://jwt.io"&gt;jwt.io&lt;/a&gt;, which
+is a site that I intended to make with the domains jsonwebtokens.com and
+jsonwebtokens.org. They beat me to it and now I don't have a use for those
+domains, maybe they'd like to buy them? So I'm reaching out to them.&lt;/p&gt;
+
+&lt;p&gt;But there are others that might be a good match with a company that I don't know
+about. After looking at the domains, if you represent or know a company that
+would be worth asking, let me know!&lt;/p&gt;
+
+&lt;h2 id="meanwhile"&gt;Meanwhile&lt;/h2&gt;
+
+&lt;p&gt;Once I have enough interest data from the survey, I'll start writing about them
+and have an informal auction using another Google Form. That form will include
+only domains of interest that are for sale, including a short version of their
+idea/history, and the starting price. There'd be a field for a bid.&lt;/p&gt;
+
+&lt;p&gt;The bids would not be public, so any bid would be a mix of what value it has to
+the bidder and how much they want to contribute to Glider Labs. I'm assuming by
+starting with my network, there are at least a few of you that would bid just to
+help out Glider Labs. &amp;lt;3&lt;/p&gt;
+
+&lt;p&gt;Depending on how it goes, I figured I might do 2 followup rounds, where the
+minimum bid for each domain becomes the highest confirmed bid from the previous round.&lt;/p&gt;
+
+&lt;p&gt;This might not work at all, or it might work a little. Either way, it will
+definitely help me determine a better value to take to auction platforms or
+domain marketplaces for the remaining domains. That process would definitely
+take longer and be more costly, so that's partly why I'm trying this way first.&lt;/p&gt;
+
+&lt;p&gt;I think that's about it. &lt;a href="https://docs.google.com/forms/d/e/1FAIpQLSdTpajOpK97l9ALocGMB5_9IFgicvURd8X3hwlVyqcLBi48xw/viewform"&gt;Here's the list of
+domains.&lt;/a&gt;
+It does include &lt;em&gt;all&lt;/em&gt; my domains, including ones I'm using or probably won't
+sell. However, if there happened to be  a private offer I couldn't refuse, I'm
+sure I'd adapt. ;)&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <title>That Time I Joined Twilio</title>
+    <link rel="alternate" href="http://progrium.com/blog/2016/06/24/that-time-i-joined-twilio/"/>
+    <id>http://progrium.com/blog/2016/06/24/that-time-i-joined-twilio/</id>
+    <published>2016-06-24T18:00:00+00:00</published>
+    <updated>2018-06-04T20:00:33+00:00</updated>
+    <author>
+      <name>Jeff Lindsay</name>
+    </author>
+    <content type="html">&lt;p&gt;Twilio is one of the few companies aligned with my core values as a technologist: the importance of the developer and developer experience, the value of design and design thinking, and the significance of powerful, accessible "plumbing". There is no other publicly traded company like it.&lt;/p&gt;
+
+&lt;p&gt;With yesterday's IPO, it's hard not to think about Twilio and my time there. I think the most interesting part of my Twilio story is how I ended up working there. Among all the early employees, I had a pretty unique experience and it had a lot to do with how I joined. It was sort of a fluke.&lt;/p&gt;
+
+&lt;p&gt;I've talked a bit about my time on the Twilio platform team. That experience in particular sort of changed my life. It laid the blueprint for everything I've done since. However, the first half of my time at Twilio was building a product that never shipped called Twilio Realtime. Not many people know this story.&lt;/p&gt;
+
+&lt;p&gt;I joined Twilio in April 2010 and stayed for two years. Even today that's the longest I've worked at one place that wasn't working for myself. I learned so much at Twilio. The company, people, and values there had a huge impact on me. It's also where I validated a hypothesis: I cannot work for any company as a full-time employee.&lt;/p&gt;
+
+&lt;p&gt;Twilio was my first full-time job in the industry. That's not to say I was new to the industry, I'd just always been an independent contractor before then. After working independently for 10 years and spending most of my time writing open source projects, it was a big deal for me to take a job like that.&lt;/p&gt;
+
+&lt;p&gt;Just before Twilio, I had been working with some friends at NASA Ames. It was originally to prototype a web app to enable participation with the TESS mission. Actually this was pretty cool. It was going to allow people to submit code that would run on the NASA satellite to do arbitrary analysis on extremely high resolution photographs of space, data that was too big to send back to earth to process there.&lt;/p&gt;
+
+&lt;p&gt;Our team of young space geeks eventually evolved into a larger project called NASA Nebula. Among other outcomes, the software developed there became Nova, the heart of OpenStack. However, this hadn't happened yet. I worked on what led up to this for a year but the politics and particular technical focus at that point had started losing my interest, so we parted.&lt;/p&gt;
+
+&lt;p&gt;Despite that, I was feeling pretty great. I had worked at NASA! How cool is that. Plus, SuperHappyDevHouse, a regular free event I started with friends a few years before, was peaking with around 300 attendees each event. And in the fall of 2009, we opened the doors to Hacker Dojo in Mountain View, today the largest hackerspace in the country. I was also actively evangelizing an idea called webhooks, and it was working. Because of that, people were inviting me to speak at conferences, and I even gave a Tech Talk at Google.&lt;/p&gt;
+
+&lt;p&gt;To a 24 year old that grew up poor, didn't go to college, and never had a full-time job, all this felt pretty good. That said, please excuse this tweet of mine from January 2010:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Beginning February I will be available for hire. Keep in mind, I'm only considering my dream job. Think you have it?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This is how I ended up being employee 8 (9? Still unclear) at Twilio. Jeff Lawson replied to this tweet with something like, "We should talk."&lt;/p&gt;
+
+&lt;p&gt;Why Twilio? There were a number of reasons.&lt;/p&gt;
+
+&lt;p&gt;The first that stood out to me was that the core mechanism of Twilio was based on webhooks. At that time, anybody that was implementing webhooks was immediately endearing to me. However, they went further and were using them in a way that showed they really got it.&lt;/p&gt;
+
+&lt;p&gt;Also, Twilio wasn't unknown to me before. I was already using it for various projects and demos. I thought the platform was amazing. I mean just read &lt;a href="http://avc.com/2016/06/best-seed-pitch-ever/"&gt;how it was pitched&lt;/a&gt; to Fred Wilson.&lt;/p&gt;
+
+&lt;p&gt;I'd been fascinated with telephony long before Twilio was conceived. As a kid I loved hooking up and splitting phone lines, and generally playing with the phone. I loved the stories of Woz and Jobs messing with the phone system. It was appealing to me for the same reason it was to them. Before the Internet it was basically the only modern worldwide system, and to tap into it felt immensely powerful.&lt;/p&gt;
+
+&lt;p&gt;Most telephony software was built on Asterisk. I never worked with Asterisk, but around 2003 my dad started an ill-fated company called Fonestream built on it. The product was based on the premise of combining audio streaming on the web with telephony. It wasn't able to find a sustainable market, perhaps it was ahead of its time, or maybe just too niche. I remember later bragging to him I could rebuild Fonestream in an evening using Twilio.&lt;/p&gt;
+
+&lt;p&gt;Fast forward to 2009, just before discovering Twilio, a friend and I were inspired by some talks explaining how much of the third world was connected via 2G phones and SMS. In some cases, villages would have the village 2G phone that would let them talk to distant family or make payments via SMS. These talks made the case for building SMS apps to enable people to coordinate and collaborate in ways that would let them uniquely solve their own real world problems.&lt;/p&gt;
+
+&lt;p&gt;As an example I recall, in some places people would walk long distances in the heat to get to a market. Sometimes they'd also have to take a train as part of that trip. If the train wasn't running for whatever reason, they'd walk all the way to the train only to have to turn back. Making it easy to know the train wasn't running before they left would save them that pointless trip.&lt;/p&gt;
+
+&lt;p&gt;After seeing these, my friend &lt;a href="https://adamsmith.as/"&gt;Adam Smith&lt;/a&gt; and I talked about making an SMS wiki. Wikis were hotter back then and really showed how a simple tool can be used for so many collaborative purposes. We didn't have Twilio yet, but we did find a way to tap into Google Voice's SMS capabilities to essentially get the same SMS API for free, though against terms of service. It worked so well, we generalized it into framework for building SMS apps. Neither were used again, but both are still on my Github: &lt;a href="https://github.com/progrium/ShortWiki"&gt;ShortWiki&lt;/a&gt; and &lt;a href="https://github.com/progrium/ShortNet"&gt;ShortNet&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Shortly after, we discovered Twilio.&lt;/p&gt;
+
+&lt;p&gt;The coolest use of Twilio I'd seen was made by Adam and other friends completely for fun. It was a game hacked together a few hours before my 24th birthday party, an epic joint party at Hacker Dojo just after it opened. The game was projected onto a huge wall. It was essentially Missile Command, except you're saving me from the missiles. There was a grid with numbers in each cell and a number to call. Anybody at the party could try to stop the missiles from destroying me by calling in and entering a number from the grid.&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt="Jeff Game" src="https://dl.dropboxusercontent.com/u/2096290/Blog/2016/savejeff.jpg" /&gt;&lt;/p&gt;
+
+&lt;p&gt;All of this was in the back of my mind when I met with Jeff Lawson at Red Rock Coffee. I liked that he was a technical CEO. We chatted about webhooks, NASA, and PHP. Then Twisted Python came up. He said, "You &lt;em&gt;have&lt;/em&gt; to talk to Evan, our CTO." Apparently Evan was all about Twisted. Half of Twilio was written in it.&lt;/p&gt;
+
+&lt;p&gt;Twisted was the Node.js of the 2000s, except nowhere near as popular. But it was the first to really popularize the single-threaded evented programming model for high performance networking applications.&lt;/p&gt;
+
+&lt;p&gt;My next visit was at Twilio HQ, then at San Francisco's Pier 38 just before they moved out. Jeff Lawson took me to brunch. We talked a lot about the power of APIs and how everything should have a web API. We even jammed around the idea of Twilio someday providing an API to manage and move around money that people could build banks on top of.&lt;/p&gt;
+
+&lt;p&gt;Oh how naive we were, as I'm sure the founders of Simple, Dwolla, and others would agree. Plus certainly out of the scope of communications, but there was definitely a shared sense that what Twilio was doing for telecom could, should, and inevitably would be done for many other industries and systems.&lt;/p&gt;
+
+&lt;p&gt;We went back to Pier 38 and into a conference room where I met their CTO, Evan Cooke. Here the three of us talked about working together.&lt;/p&gt;
+
+&lt;p&gt;Remember, I said I was looking for my dream job and I meant it. Can you guess what that entails? If you know me it wouldn't surprise you: A place where I can work on whatever I want. Sure, who wouldn't want that? But I was ready to walk away if they said no.&lt;/p&gt;
+
+&lt;p&gt;I wanted a place where I could do my life's work. Not a place that would &lt;em&gt;give&lt;/em&gt; me my life's work. A place I could &lt;em&gt;do&lt;/em&gt; my life's work. A place I could make a home out of, stop contracting, and focus on all the projects I consider to be important. In theory, Twilio and I seemed aligned enough it could work.&lt;/p&gt;
+
+&lt;p&gt;Their response was fairly predictable. They said, "Well what do you want to work on first?"&lt;/p&gt;
+
+&lt;p&gt;At that time, regardless of my job situation, there was a project I was planning to build as open source and ideally run as a free service. It was a service that would handle real-time communication to the browser via REST API. Today, especially with Node.js and WebSockets this isn't anything special. Back then, though, neither of those existed.&lt;/p&gt;
+
+&lt;p&gt;The long-lived connections necessary for this were something a lot of web developers were actually afraid of. "It doesn't scale!" "They're too expensive!" A lot of very talented, prominent developers had this opinion and said it wouldn't work. They were sort of right, but also not entirely.&lt;/p&gt;
+
+&lt;p&gt;Back in 2004 when Gmail was released, it did something almost nobody was doing then. It used a browser feature called XMLHttpRequest or XHR. It had been functional in Mozilla since 2002. By 2004 it was available in the top major browsers. It allowed pages to load content and make requests after a page was loaded. Updating without loading a new page. The technique was dubbed Ajax and became quite trendy to make faster, less jarring dynamic web experiences.&lt;/p&gt;
+
+&lt;p&gt;One night not long after Gmail was released, 7 years before WebSockets, Adam Smith and I were working on a web project and got distracted by an idea. Inspired by Gmail, we wondered if we could use Ajax/XHR to make a real-time game in the browser. Most web apps that wanted to push updates to a page would have the browser poll the server using XHR. That wasn't real-time. That wouldn't support, say, a multiplayer action game.&lt;/p&gt;
+
+&lt;p&gt;Armed with Apache, PHP, Firefox, and no serious knowledge of concurrent programming, over the next two days straight we did it. We ended up implementing long-polling, which was not done enough to have a consistent name yet. The XHR request would stay open until it got a message, then reconnect immediately and stay open until the next. Apache and PHP made it really difficult to share data between requests, but we found PHP functions for POSIX IPC functions, which let us create a file both request threads could see and effectively send messages on. In retrospect, a Unix domain socket would have been a better idea, though it's possible PHP didn't have an API for them yet.&lt;/p&gt;
+
+&lt;p&gt;Nearly a year after making it, we showed the proof-of-concept game we called AjaxWar off at SuperHappyDevHouse to much acclaim. We won best talk. &lt;a href="https://www.youtube.com/watch?v=-cHKFsnnAYw"&gt;A poorly lit video of the talk is still on YouTube.&lt;/a&gt; In the audience was Alex Russell who later coined Comet to describe techniques like this to achieve real-time streaming in the browser.&lt;/p&gt;
+
+&lt;p&gt;Even with Comet popular enough to be given a name, it was not done that often. It was extremely hard to implement reliably in a consistent way across browsers and versions of browsers, let alone at scale. There were a handful of intricate tricks, all of which you'd implement then detect which one to use based on the browser. But it wasn't just client-side. Each trick required a different backend implementation, and none of them could be done with the common web stacks of the time.&lt;/p&gt;
+
+&lt;p&gt;I wanted to solve this problem with a simple web API. There was basically one open source project that people could use for this sort of thing, but it was built on technology foreign to most web developers and would be another fragile component to run in the stack. I felt this was unnecessary and inaccessible to most developers.&lt;/p&gt;
+
+&lt;p&gt;I almost considered doing it as a startup myself, but there I was with Evan and Jeff and they asked what I wanted to do. I told them real-time browser communication as a service.&lt;/p&gt;
+
+&lt;p&gt;Evan's eyes lit up. He showed me a demo he built using Twisted. It was a web page that visualized every event going through Twilio in real-time. It would seem he was excited by the idea. Jeff also seemed excited to expand the product line to a new developer tool. It wasn't telecom, but it was communications.&lt;/p&gt;
+
+&lt;p&gt;I was hired and I had my first project. It had almost nothing to do with the existing Twilio product.&lt;/p&gt;
+
+&lt;p&gt;Twilio Realtime was on its way, but I was doing it all alone. Despite a growing engineering team around me. They were tackling problems with scaling, billing, important features, responding to incidents, and everything related to building and running Twilio. I wasn't. Sometimes I'd get involved or provide feedback if asked, but I just wasn't responsible for those things.&lt;/p&gt;
+
+&lt;p&gt;I've heard the most common story told about me at Twilio today is this: Somebody interviewing for a job asks, "What's it like working with Jeff Lindsay?" The interviewer, an engineer I know with a great sense of humor, replies, "It's sort of like not working with Jeff Lindsay."&lt;/p&gt;
+
+&lt;p&gt;We all worked at the same company, but I didn't actually work with anybody for most of that first year. This wasn't intentional, but that's what happens when you join a company to work on something other than the company's product. This eventually changed, but I certainly gained the reputation of loner.&lt;/p&gt;
+
+&lt;p&gt;Despite that, Twilio Realtime was coming along. We had a private preview and people loved it. However, other startups were popping up providing a similar product. I recall Pusher and later PubNub. I got a lot of feedback that Twilio Realtime was easier to use. That was encouraging. Plus I figured, "We're Twilio, we can blow those other guys out of the water."&lt;/p&gt;
+
+&lt;p&gt;Unfortunately, it never felt like Twilio Realtime was getting close to launch. Evan had imposed some intense scaling requirements for launch, on the order of millions of subscribers. This whole period was a blur. It was frustrating because a new startup would just ship and deal with growth as it came. At this point, Twilio couldn't afford to do that.&lt;/p&gt;
+
+&lt;p&gt;Fast forward a few months, Twilio had gotten even bigger. There were now several product people, but Twilio Realtime didn't have any support from product. It basically slipped through the cracks since it started before a product team existed, and product was now necessary to get anything shipped. After identifying this, Twilio Realtime was assigned a product manager.&lt;/p&gt;
+
+&lt;p&gt;We tried to make it work, and it would have been a great product to use, but it seemed ultimately there was not a strong enough business case to launch Twilio Realtime. In retrospect it's obvious from a technology standpoint that the problem it solved was on its way to being dissolved. Instead the technology and team was rolled into Twilio Client, a toolkit for web and mobile to make softphones and other communications applications.&lt;/p&gt;
+
+&lt;p&gt;It was good to work with a whole team. It was also a nice break to be part of somebody else's vision. I found interesting problems to get involved with like presence, API design, security tokens, and more messaging stuff. I was also organizing Twilio Tech Talks and bringing in people to talk about useful technology and ideas.&lt;/p&gt;
+
+&lt;p&gt;Twilio Client shipped around my one year mark. That's when I joined the fledgling infrastructure team. After another year, I realized as great as Twilio was, as important as the product was, working there was not maximizing my output. It was not the place I could do my work. No company would have been, and I've since gone back to collaborations and finding ways to fund my independent work.&lt;/p&gt;
+
+&lt;p&gt;Even if Twilio wasn't the place I could do my life's work, and as obvious as it is now that it wouldn't have worked, I'm grateful that Jeff and Evan took that chance with me. Not just because of this IPO, which might actually help fund more of my work, but because of what I learned, the people I met, and the ideas that were explored there. It was fun to be even a small part of a company that incredibly special.&lt;/p&gt;
+
+&lt;p&gt;Congratulations to everybody at Twilio.&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <title>Generative Technology</title>
+    <link rel="alternate" href="http://progrium.com/blog/2016/04/25/generativity/"/>
+    <id>http://progrium.com/blog/2016/04/25/generativity/</id>
+    <published>2016-04-25T21:00:00+00:00</published>
+    <updated>2018-06-04T20:00:33+00:00</updated>
+    <author>
+      <name>Jeff Lindsay</name>
+    </author>
+    <content type="html">&lt;p&gt;I've felt for a long time that certain technologies were more appealing to me than others. I'm not talking about which industries or fields the technology is applied, but something deeper that impacts all technology. It's the reason why the computer felt so special to many of us. Perhaps why a lot of us got into software. For years I've been searching for a way to describe it and now I can: generativity.&lt;/p&gt;
+
+&lt;p&gt;In 2008, Jonathan Zittrain wrote &lt;a href="http://www.amazon.com/Future-Internet-How-Stop/dp/0300151241"&gt;The Future of the Internet and How To Stop It&lt;/a&gt;. The book presents the idea of two types of technologies: sterile and generative. It ultimately focuses on policymaking concerns around generativity, in particular the security implications. &lt;a href="http://boingboing.net/2008/07/23/zittrains-the-future.html"&gt;Cory Doctorow has a good summary review&lt;/a&gt; if you'd like to learn more about the actual topic of the book. However, here I'd like to expand on &lt;a href="https://en.wikipedia.org/wiki/Generativity"&gt;generativity&lt;/a&gt; from a broader, technologist point of view.&lt;/p&gt;
+
+&lt;p&gt;Zittrain describes sterile technologies as those with a fixed purpose or use. They're made for one thing and don't often surprise you. Another way to think of them are as appliances. Home appliances exemplify sterile technology. The toaster is pretty much only good as a toaster. The smoke alarm is only good as a smoke alarm.&lt;/p&gt;
+
+&lt;p&gt;Generative technologies are those with more potential uses than the creator could even imagine. They're general, repurposable, and often surprising in how they're used. They encourage innovation and tend to result in new technology on top of them. One of the most generative technologies we have is computing. The Internet and the web are themselves also generative technologies. At the content layer on top of the web, Wikipedia is a generative technology.&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt="Toaster and Commodore 64" src="https://dl.dropboxusercontent.com/u/2096290/Wiki/2016/toaster_c64.png" /&gt;&lt;/p&gt;
+
+&lt;p&gt;Most technology falls somewhere between sterile and generative. Or perhaps, are a little of both. Zittrain describes certain devices as "tethered." That is, generative, but not purely generative. The iPhone and the App Store are common examples of tethering. They allow anybody to create new uses for the device by making apps, but Apple is the gatekeeper. Truly generative technologies and platforms don't have a single gatekeeper for their ecosystem. Again, our prime examples: the Internet, the web, Wikipedia.&lt;/p&gt;
+
+&lt;p&gt;Zittrain tries to remain neutral on whether sterile or generative is better. He argues that your car should likely be a sterile technology. Generative systems can grow messy, and malicious third parties can often abuse them. Truly generative systems can sometimes be compared to the Wild West. Perhaps in fear of that chaos and of what we don't understand, we let companies sterilize and exert control over these technologies.&lt;/p&gt;
+
+&lt;p&gt;The book ends up focusing on the debate around this trade-off. Yet it's the idea of generativity that captures my interest most. I'm not against sterile technologies, but I do have a bias towards generativity. I would love to see more generative technology than sterile, but we live in a world that discourages it.&lt;/p&gt;
+
+&lt;h2 id="blame-it-on-consumerism"&gt;Blame it on consumerism&lt;/h2&gt;
+
+&lt;p&gt;Business loves sterile technology. It's more predictable and easier to control. Sterile is also easier to market. A product needs to solve a specific problem for people to see a need for it. This is why products tend to have a fixed purpose in marketing if not by design.&lt;/p&gt;
+
+&lt;p&gt;A product with several uses is often harder to market until the uses are well-known. Think of baking soda and personal computers.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="http://twilio.com"&gt;Twilio&lt;/a&gt; is another example of a generative product. We first marketed to developers because they could see all the ways to use it. Later, marketing to large enterprises required a shift in strategy. We had to focus on narrow, problem-specific solutions on top of it. This is often a necessary strategy for API and platform companies.&lt;/p&gt;
+
+&lt;p&gt;Besides marketability, generativity often comes with other business challenges. Having untethered uses is a support nightmare. Generative technology can also be confusing and harder to adopt. And again, malicious third parties can hurt users and product reputation. These all have costs that are easier to manage by limiting generativity.&lt;/p&gt;
+
+&lt;p&gt;Another way to say it, sterile technology is more consumer-friendly. By keeping it simple and focused, it's easier to use, easier to market, and easier to run a business around it. These all sound great, but from a technology standpoint the trade-off is the possibility space it allows us to explore. A toaster lets us make toast. A computer lets us do almost anything.&lt;/p&gt;
+
+&lt;h2 id="unprecedented-generativity"&gt;Unprecedented generativity&lt;/h2&gt;
+
+&lt;p&gt;Generativity explains why the development of the personal computer was such a big deal. Computing represents the most generative technology in human history. You can imagine the marketing challenge in front of early PC vendors: a device you could use for almost anything. Most of them focused on known use cases around business, learned from the previous generation of computers.&lt;/p&gt;
+
+&lt;p&gt;Steve Jobs had a different idea. He knew how special the computer was, often citing the magic of one mind and one computer. His mission was to make computing personal and on a massive scale. Beyond hobbyists and beyond the workplace.&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt="Steve Jobs and the Macintosh, Norman Seeff" src="https://dl.dropboxusercontent.com/u/2096290/Wiki/2016/steve_jobs_macintosh.jpg" /&gt;&lt;/p&gt;
+
+&lt;p&gt;The way he felt he could do this was to make the computer as much into an appliance as possible. He knew the real generativity was in software, so make the hardware sterile. Plug it in, turn it on, then point and click to enlightenment.&lt;/p&gt;
+
+&lt;p&gt;But Jobs was a control freak. He tried wherever possible to make the software sterile, or at least tethered, as well. Can you imagine how excited he was to move Apple into consumer electronics? Actual appliances! If you recall, he even tried to get away with making the iPhone a closed, sterile appliance with no third-party apps.&lt;/p&gt;
+
+&lt;p&gt;This sterile appliance strategy started with the Apple II. But since the Apple II was Wozniak's baby, it was more generative than sterile. One argument in particular about the design of the Apple II captured their contrasting values.&lt;/p&gt;
+
+&lt;p&gt;Woz wanted 8 slots for expansion cards in the Apple II. With more slots, third parties could add more functionality to the device. This would increase its potential uses, making it more generative. Jobs only wanted two slots for two specific add-ons: a printer and a modem. Fixed, predictable, sterile.&lt;/p&gt;
+
+&lt;p&gt;The story of Steve Jobs is all the more remarkable considering his dedication to the sterile appliance strategy.&lt;/p&gt;
+
+&lt;p&gt;The Apple II was a success, but it would seem as though it was because of the generativity that Woz kept intact. Yet every computer product Jobs orchestrated from then on applied the appliance strategy in full force. It seemed to only result in financial failure after failure. From the Lisa, to the Macintosh, to the Next Computer. You can imagine somebody in his position might have reconsidered this strategy. He persisted.&lt;/p&gt;
+
+&lt;p&gt;Finally, with his return to Apple, the timing was right for the iMac. The technology was cheap enough and the PC market was large enough. The strategy finally had a chance. It worked and it would seem Jobs not once doubted the appliance strategy. In fact, he took it to the next level with the iPod, iPhone, and iPad.&lt;/p&gt;
+
+&lt;p&gt;But I don't believe computers should be sterile. It doesn't make sense. They're fundamentally generative. And it wasn't just Jobs that pushed them to be more sterilized. Every business in the industry wanted to sell computers to more people. They were all incentivized to dumb down and sterilize computing. Not just the hardware, but where it hurts the most: the software.&lt;/p&gt;
+
+&lt;p&gt;The upside is that computing is now everywhere. Perhaps sterilizing computing was necessary to get here. The problem now is that what we have is a stunted form of computing. I call this &lt;a href="http://progrium.com/wiki/PopComputing/"&gt;Pop Computing&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id="generativity-and-hacker-culture"&gt;Generativity and hacker culture&lt;/h2&gt;
+
+&lt;p&gt;The Apple II expansion slot story was as much about Woz as it was about Jobs. It wasn't just telling about Jobs and his appliance strategy, it was also about Woz having a preference for generative technology. This is significant because Woz is a symbol of hacker culture, and I don't believe his bias for generativity is separate from his values as a hacker.&lt;/p&gt;
+
+&lt;p&gt;I'm beginning to define a hacker as a person that needs to use and build generative technology. It might not be a conscious drive, but I believe generativity is part of hacker DNA.&lt;/p&gt;
+
+&lt;p&gt;Think about it: they prefer using technologies that have more generative properties. Open source, extensible, programmable … "hackable". They often have a distaste for products that are more sterile. For example, Apple products. Most hacks, including life hacks, are a form of repurposing or applying generativity where it wasn't before. Jailbreaking the iPhone is making a sterile device more generative.&lt;/p&gt;
+
+&lt;p&gt;Some say hackers are about freedom, citing open source and free software. Perhaps they're about unchaining from control and authority. But there are plenty of hackers that are okay with some control, or okay with closed source. So I don't believe these are the ideas that define hacker culture as a whole.&lt;/p&gt;
+
+&lt;p&gt;Being a hacker seems more about the acts of building, tinkering, and repurposing. But what is the motivating force behind these actions?&lt;/p&gt;
+
+&lt;p&gt;I think hacker culture is about a bias towards generativity. Using and building more generative technology. Perhaps hackers are just people that intuit the importance of generativity for humanity.&lt;/p&gt;
+
+&lt;h2 id="the-point-of-technology-and-generativity"&gt;The point of technology and generativity&lt;/h2&gt;
+
+&lt;p&gt;In &lt;a href="http://www.amazon.com/What-Technology-Wants-Kevin-Kelly/dp/0143120174"&gt;What Technology Wants&lt;/a&gt;, Kevin Kelly explored the biases and trends of technology across human history. He broadly defines technology as anything useful created by a human mind. This includes hammers and gadgets, but also law and cities. He found that technology helps us trend towards more choices, opportunities, possibilities, and freedoms.&lt;/p&gt;
+
+&lt;p&gt;These are all different ways of talking about the same thing. Every new technology brings us the potential for more new technology. Again, this is not just tools, but art and ideas. Now imagine Mozart before the piano. Or van Gogh before cheap oil paints. Or Hitchcock before film. These creators were made in part by their mediums. If their technologies had not been invented or discovered before their time, their voice might not have been heard.&lt;/p&gt;
+
+&lt;p&gt;How many kids are out there today whose medium doesn't exist yet? Kids that might not be able realize their full potential. Having an outlet that resonates so strongly that it fills their life with purpose and meaning, or at least a way to express themselves.&lt;/p&gt;
+
+&lt;p&gt;Vine, a micro-video platform, has allowed for a new form of celebrity: Vine stars. This is different from being a movie star, or even being a YouTube star. It's an opportunity that didn't exist before. Or think of Amazon Web Services and how many startups, sometimes just one person, were enabled with on-demand compute technology that was previously only available to the biggest tech companies. If these are too trendy, just think of how many opportunities were opened up by cheap automobiles and later the Interstate Highway System.&lt;/p&gt;
+
+&lt;p&gt;In contrast, imagine a world without technology. Where we were incapable of making any sort of technology, including hunting tools, fire, or language. We as a species would probably not survive nature.&lt;/p&gt;
+
+&lt;p&gt;So it seems in general, the force of technology is a Good Thing. Toolmaking is what makes us human. It helped establish humanity. And from there it allows us to find new ways to meaningfully exist as individuals and thus as a species.&lt;/p&gt;
+
+&lt;p&gt;By definition, generative technology creates far more opportunities and possibilities than its sterile counterpart. Generative technology is more aligned with the basic trend of technology than sterile. Perhaps you could say it's a more potent form of technology. I'm not saying there isn't a place for sterile technology. But understanding the value of technology and generativity, it makes sense some of us would reject a world filled primarily with sterile technology.&lt;/p&gt;
+
+&lt;p&gt;Generativity is important to me. I think it's important to hackers, creators, and producers at large. I think it's worth fighting for, even if to just achieve a better balance between the two. We should at least have a choice of whether our technology is sterile or generative. But it seems that a dominantly consumer-driven society will unfortunately always be biased towards sterile technology.&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <title>Leadership, Guilt, and Pull Requests</title>
+    <link rel="alternate" href="http://progrium.com/blog/2015/12/04/leadership-guilt-and-pull-requests/"/>
+    <id>http://progrium.com/blog/2015/12/04/leadership-guilt-and-pull-requests/</id>
+    <published>2015-12-04T16:58:00+00:00</published>
+    <updated>2018-06-04T20:00:33+00:00</updated>
+    <author>
+      <name>Jeff Lindsay</name>
+    </author>
+    <content type="html">&lt;p&gt;I have a lot of &lt;a href="https://github.com/progrium?tab=repositories"&gt;open source projects&lt;/a&gt;. Even more with &lt;a href="https://github.com/gliderlabs?tab=repositories"&gt;Glider Labs&lt;/a&gt;. Some of them are fairly popular. All of them get me excited. But most of them also bum me out. I'm going to share one of the reasons I've had to take a break for the past couple months, and why all my repositories are now looking for more maintainers.&lt;/p&gt;
+
+&lt;p&gt;Open source is hard. It seems easy, though. You just write a piece of software and put it on Github, right? Well that was the easy part. Now comes maintenance. And very likely politics. Inevitably, guilt. Multiply that by the number of open source projects you have and their popularity. End result: open source can be a bummer.&lt;/p&gt;
+
+&lt;p&gt;Jacob Thornton (&lt;a href="https://twitter.com/fat"&gt;@fat&lt;/a&gt;), co-author of Bootstrap, gave a talk a few years back echoing the sentiment of many open source authors and maintainers. He calls it Cute Puppy Syndrome. It's not the best analogy, but it gets the point across. Open source projects, like puppies, are great fun when they start. As they get older and more mature, responsibility seems to outweigh their cuteness. One solution is to put your old dog up for adoption and get a new puppy. As you can tell from his delivery, this analogy is intended to be humorous:&lt;/p&gt;
+
+&lt;p style="text-align:center;"&gt;&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/UIDb6VBO9os?start=1190" frameborder="0" allowfullscreen=""&gt;&lt;/iframe&gt;&lt;/p&gt;
+
+&lt;p&gt;He mentions that many authors of popular open source projects have gotten burnt out and look for an exit. Often handing projects off to maintainers, sometimes never to return. Not to avoid responsibility, but to stay sane. Still, much of the time, that sense of responsibility lingers. As Jacob expands on the puppy analogy:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;If you have your puppy and it turns into a dog, you put it up for adoption, you give it to a maintainer. And then he over feeds it and it becomes fat and bloated. And you just sit there and you're really sad because you don't really have time to take care of your puppy any more, but you don't want to see it fat and bloated. So you're just real sad all the time.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Alternatively, you can let issues and PRs pile up. Guilt and sadness either way. At least opening the project up lets it survive and continue to provide value to a larger audience. You just have to let go of the project as it will now evolve in ways you might not agree with.&lt;/p&gt;
+
+&lt;p&gt;When I did this with &lt;a href="http://progrium.viewdocs.io/dokku/"&gt;Dokku&lt;/a&gt;, the new maintainers did a great job at keeping the project and community healthy. I can't thank them enough for that. I had to let go quite a bit, but the project would probably be dead without them.&lt;/p&gt;
+
+&lt;p&gt;In fact, there's something interesting about maintainers that didn't author the project. It's probably different from person to person and project to project, but the maintainers of Dokku don't have the guilt or burden that I do. They're happy to help, and as volunteers don't feel like they owe anybody anything. It's really the ideal situation. Perhaps authors &lt;em&gt;shouldn't&lt;/em&gt; be maintainers after a certain point.&lt;/p&gt;
+
+&lt;p&gt;That said, even with these great maintainers, Dokku really only kept on an incremental path of maintaining the status quo. That's not necessarily a bad thing, but it meant Dokku wasn't able to develop further in the directions I had originally intended. I thought to myself, well eventually I'll find time to do a system-wide refactoring to get it on this path I want and submit these as PRs like any other contributor. That time never came, and the project continued to fall behind from the evolving larger vision. The project I started was not living up to my own expectations for it.&lt;/p&gt;
+
+&lt;p&gt;Sadness. Guilt.&lt;/p&gt;
+
+&lt;p&gt;Then I did something different. It was so simple. I wrote a wiki page describing what I wanted and why I wanted it. For some reason it came as a surprise to me that the maintainers started moving the project in that direction! Did it happen exactly how I'd do it? Not always. But it still brought the project closer to what I wrote down.&lt;/p&gt;
+
+&lt;p&gt;This shouldn't have come as a surprise. In essence, this is leadership. There are different forms of leadership, but at the core is the idea of "saying what, not how". It can be very hard for programmers to get into this mindset because our medium is all about the how. Stepping back and writing what you want with flexibility towards how it's implemented takes practice.&lt;/p&gt;
+
+&lt;p&gt;This experiment with Dokku was far from perfect. In fact, that document is still incomplete. Project leadership is just as ongoing as maintenance. However, it's something worth getting better at. It's essential to authoring many open source projects and remaining happy enough to keep going. In the case of my projects, since there is always a bigger picture they fit into, it's even more important.&lt;/p&gt;
+
+&lt;p&gt;Dokku is just one of many projects, but Dokku is one of my only projects that I'm not an active maintainer. Dokku isn't why I had to take a break, it was all the others.&lt;/p&gt;
+
+&lt;p&gt;Some of you might have seen my ramblings about &lt;a href="http://progrium.com/blog/2015/10/05/the-next-10-years-megalith/"&gt;Megalith&lt;/a&gt;. Some of you might even be able to follow them enough to see that most of my open source projects are all basically part of Megalith. Or that Megalith is basically all my projects. You can probably see how this leadership is critical to sustain all these projects while keeping them moving in roughly the same direction.&lt;/p&gt;
+
+&lt;p&gt;I don't write open source software to make money. In fact, even solving a particular problem is secondary to working towards a vision of how the world should be. Since that's really what's important to me, I should be spending my time on being an effective leader. At the very least, documenting what I want, the direction, why it's important, what design principles are involved, preferred architectural patterns, and so on. Then helping people understand, integrating their feedback, and letting go of a lot of the details.&lt;/p&gt;
+
+&lt;p&gt;To support this, I need to open up our projects to more maintainers. Going forward, I'll be trying a variation of the &lt;a href="http://felixge.de/2013/03/11/the-pull-request-hack.html"&gt;Pull Request Hack&lt;/a&gt; to get more people involved across all projects. If you submit a solid substantial PR or several solid minor PRs to any Glider Labs project, you'll be invited to have commit access across all projects.&lt;/p&gt;
+
+&lt;p&gt;Starting now, all public projects under &lt;a href="https://github.com/progrium"&gt;my username&lt;/a&gt; or &lt;a href="https://github.com/gliderlabs"&gt;Glider Labs&lt;/a&gt; have an open call for maintainers. If you'd like to volunteer to help maintain any of these projects, just &lt;a href="http://glider-slackin.herokuapp.com/"&gt;join our Slack&lt;/a&gt; and in &lt;code&gt;#intros&lt;/code&gt; say you're interested in becoming a maintainer.&lt;/p&gt;
+
+&lt;p&gt;From there I'll do my best to provide guidance and leadership. Together we'll keep making great things!&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <title>The Next 10 Years: Megalith</title>
+    <link rel="alternate" href="http://progrium.com/blog/2015/10/05/the-next-10-years-megalith/"/>
+    <id>http://progrium.com/blog/2015/10/05/the-next-10-years-megalith/</id>
+    <published>2015-10-05T23:47:00+00:00</published>
+    <updated>2018-06-04T20:00:33+00:00</updated>
+    <author>
+      <name>Jeff Lindsay</name>
+    </author>
+    <content type="html">&lt;p&gt;I've decided what I'm going to be working on for the next 10 years. It's epic and exciting, and I'm going to need your help. It's called Megalith.&lt;/p&gt;
+
+&lt;p&gt;Megalith is a symbol of the ideal I've been working towards my entire career. It's constantly evolving and very nuanced. I'm going to be upfront and say that I'm not going to be able to fully explain what Megalith is in this post. Instead, I'm going to start setting up context. To me, context is everything.&lt;/p&gt;
+
+&lt;p&gt;For the past few years I've been spending most of my working hours writing open source software related to a project I worked on in 2012 called &lt;a href="http://docker.com"&gt;Docker&lt;/a&gt;. Docker was created as a skunkworks collaboration between me and some talented engineers at dotCloud, now Docker. The company pivoted 100% to Docker and is now worth about a billion dollars. As an independent, I didn't stay with Docker, I moved on to the next problem. Docker was one piece of a grander vision.&lt;/p&gt;
+
+&lt;p&gt;To help pay for this lifestyle, I've experimented with sponsorships and even fell into lucky situations. Last year I tried to make it a little more sustainable by starting &lt;a href="http://gliderlabs.com"&gt;Glider Labs&lt;/a&gt; with a friend. We focused on consulting around Docker. We helped some of the first people to actually run Docker in production. We did this to learn and get a better grasp on the Real Problems. Something many vendors in this space don't really do. We learned a lot and as a result we ended up making a lot more open source software.&lt;/p&gt;
+
+&lt;p&gt;The problem is that there is a lot more to make. This ideal I have in mind that's been developing in my head for over 5 years is a massive undertaking. I've realized if I'm going to keep pursuing it, I need two things: a better vehicle for the work, and a unifying project to get help around it.&lt;/p&gt;
+
+&lt;h2 id="building-a-better-organization-for-this-work"&gt;Building a better organization for this work&lt;/h2&gt;
+
+&lt;p&gt;The software I write that people love comes from a compulsive drive that goes beyond and even against the idea of startups. With the exception of Docker and a few other collaborations, I've never made anything that people loved while working for a startup. Naming and evangelizing webhooks was not something anybody paid me to do. In fact, a lot of projects I've built or think should exist are too small to sustain a startup. Does that mean they shouldn't be built? Or that I should temporarily dedicate my life to maybe make one of them work as a startup?&lt;/p&gt;
+
+&lt;p&gt;Even a lifestyle business is quite a commitment to make work. My friend &lt;a href="https://inconshreveable.com/"&gt;Alan Shreve&lt;/a&gt; made &lt;a href="https://ngrok.com/"&gt;Ngrok&lt;/a&gt;, inspired by my tool &lt;a href="https://github.com/progrium/localtunnel"&gt;Localtunnel&lt;/a&gt;. It's free and open source, but he's also bootstrapped a business out of it. This business is what he spends most his working hours on.&lt;/p&gt;
+
+&lt;p&gt;Given my goals and values I do prefer this approach, but it still poses a problem. The time spent writing lines of code to support a business, the time spent figuring out market fit, the time spent on support and operations … this is time not moving forward to me. It's extracting wealth out of something that already exists.&lt;/p&gt;
+
+&lt;p&gt;Why do this? So Alan can sustain himself and potentially fund other projects, right? In the meantime, I know for a fact that there's a lot of great open source software that he's not making.&lt;/p&gt;
+
+&lt;p&gt;His goal is passive income. For a lot of us independents, that's the dream. It may or may not realize in full, but it's certainly time consuming either way. In that way, it's sort of just a smaller variation of the startup lottery.&lt;/p&gt;
+
+&lt;p&gt;Meanwhile, in the same time, I've put out dozens of open source projects that solve problems or work towards dissolving larger problems in the long-term. I actually can't help it. It's compulsive like I said. The only way I see it stopping is if I leave the space altogether. I don't get paid to do 90% of these projects. They help bring me contract work, but seemingly only to take time away from supporting and building a community around those projects.&lt;/p&gt;
+
+&lt;p&gt;The other problem, for me, is that running a business causes you to make software differently. You think about building software you can sell, or that supports what you can sell. More than doing one thing well, you think about the features people will pay for. More than making it simple, you think about obscure enterprise and legacy use cases. Conventional knowledge says you must do those in some way at some point because that's How It Works.&lt;/p&gt;
+
+&lt;p&gt;The problem is worse for startups that take VC money. Even VCs that "get it" and let you focus on open source traction still expect you to eventually figure out how to monetize and make them millions. To varying degrees this often makes startups:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;focus on enterprise customers, not regular developers&lt;/li&gt;
+  &lt;li&gt;ship software that solves short-term problems, or yesterday's problems&lt;/li&gt;
+  &lt;li&gt;prioritize sexy demoware without production hardening&lt;/li&gt;
+  &lt;li&gt;increase perceived value with more hires and more partnerships&lt;/li&gt;
+  &lt;li&gt;de-prioritize any effort outside the product that makes money&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href="https://hashicorp.com/"&gt;Hashicorp&lt;/a&gt; is one of the best examples of companies in this space that have done a good job at taking just enough VC and working against a lot of these forces. However, they still work within the framework. They still have a commitment to exit big someday. The implications of this are not insignificant.&lt;/p&gt;
+
+&lt;p&gt;I'm much more likely to bootstrap a company like Alan than take VC money. Not only is it just more my style, but a VC startup just won't play to my strengths. Though, building a bootstrap business doesn't seem to produce the most value for my time either. Or make me very happy.&lt;/p&gt;
+
+&lt;p&gt;I'd much rather find a new way. Not just because I want to play to my strengths, but because I know I'm not the only one this applies to. I also know that a different, better kind of open source software will result if done properly.&lt;/p&gt;
+
+&lt;p&gt;What I want is something of an independent R&amp;amp;D lab. I want us to &lt;a href="http://gliderlabs.com/blog/2015/04/08/what-have-we-been-doing-for-40-years/"&gt;re-capture&lt;/a&gt; the innovation and &lt;em&gt;invention&lt;/em&gt; of Xerox PARC and Bell Labs, but focusing on open source. I want us to have the freedom to explore and build software &lt;em&gt;right&lt;/em&gt; with like-minded people. Not to get rich, but to &lt;em&gt;slow cook software&lt;/em&gt;. Systems software that further empowers individuals and small groups … enterprise customers of the future, not the past.&lt;/p&gt;
+
+&lt;p&gt;This is what I want Glider Labs to transition into. In fact, it's already been operating like this in a way. And I've been exploring and learning ways to make this work for years now. It's part business, part cooperative, part public service. But to make the leap to a lab that supports more than myself, it won't happen over night. And I can't do it by myself.&lt;/p&gt;
+
+&lt;h2 id="sharing-the-vision-enabling-participation"&gt;Sharing the vision, enabling participation&lt;/h2&gt;
+
+&lt;p&gt;This isn't just about a new organization. It has to have some purpose, some initial unifying project. In order to start from nothing, there needs to be a clear mission of value. Not just boundless experimentation. Luckily, most of my work does fall under a certain theme driven by a nebulous but nonetheless motivating ideal. That seems like a good place to start.&lt;/p&gt;
+
+&lt;p&gt;I've been told if I just wrote down everything I want to build and why, people might be willing to help out. This is challenging both because of scope and its constant evolution. I figured if I just keep making projects people will start to see it, but other than a few people I'm not sure that's working out. So I'm going to try a more top-down approach.&lt;/p&gt;
+
+&lt;p&gt;The real project this post is about is a meta-project I'm calling Megalith. It's an umbrella project to help unify and bring a common goal to all the work I've been doing for the past 10 years, and over the next 10 years.&lt;/p&gt;
+
+&lt;p&gt;I know I can't do it alone, so the project is designed for participation. It will involve many more specific projects that are open source and independently useful. Many already exist. Most do not.&lt;/p&gt;
+
+&lt;p&gt;Whether or not the final ideal is achieved, it will be approached. Lots of value will be produced in the process. Not just software and contributions to existing open source, but guides and how-to knowledge of everything I've learned to lead me to my current conclusions, and everything we learn in the process.&lt;/p&gt;
+
+&lt;p&gt;Glider Labs and Megalith are separate but related parts of this venture. Megalith is the meta-project, Glider Labs is the organization. The idea is that they support each other. Megalith makes this new Glider Labs a reality, Glider Labs makes Megalith a reality.&lt;/p&gt;
+
+&lt;h2 id="relevant-to-your-interests"&gt;Relevant to your interests?&lt;/h2&gt;
+
+&lt;p&gt;The first step is to explain Megalith and try to communicate this idea in my head, or at least some manifestation of it. Then everything else will start to make sense. It's almost more about approach and values. It's about an idea of simple, composable, extensible tools to make modern end-to-end development and operations sane at both large and small scale. And making the world more programmable…&lt;/p&gt;
+
+&lt;p&gt;Anyway, it's more than I can get into here. I've set up &lt;a href="http://eepurl.com/bAietL"&gt;an announcement mailing list&lt;/a&gt; you can subscribe to. Sign up and you'll get emails about what's next. I might even email you directly to say hi.&lt;/p&gt;
+
+&lt;p&gt;Feel free to get in touch with me, leave a comment below, or help out by sharing this post if it resonates with you. I'm pretty excited, especially since a lot of people have expressed interest so far.&lt;/p&gt;
+
+&lt;p&gt;Lastly, here's a silly video I made about it:&lt;/p&gt;
+
+&lt;center&gt;&lt;iframe src="https://player.vimeo.com/video/140272143" width="600" height="337" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""&gt;&lt;/iframe&gt;&lt;/center&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;strong&gt;&lt;a href="http://eepurl.com/bAietL"&gt;Subscribe for updates!&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <title>Deis Breathes New Life into Dokku</title>
+    <link rel="alternate" href="http://progrium.com/blog/2014/10/28/deis-breathes-new-life-into-dokku/"/>
+    <id>http://progrium.com/blog/2014/10/28/deis-breathes-new-life-into-dokku/</id>
+    <published>2014-10-28T01:35:00+00:00</published>
+    <updated>2018-06-04T20:00:33+00:00</updated>
+    <author>
+      <name>Jeff Lindsay</name>
+    </author>
+    <content type="html">&lt;p&gt;Today I'm excited to announce that &lt;a href="https://github.com/progrium/dokku"&gt;Dokku&lt;/a&gt; is now sponsored by my friends of the &lt;a href="http://deis.io/"&gt;Deis&lt;/a&gt; project. This means that &lt;a href="http://opdemand.com/"&gt;OpDemand&lt;/a&gt;, the company behind Deis, will be funding part-time development of Dokku and its components.&lt;/p&gt;
+
+&lt;h2 id="remember-dokku"&gt;Remember Dokku?&lt;/h2&gt;
+
+&lt;p&gt;A little over a year ago, &lt;a href="http://progrium.com/blog/2013/06/19/dokku-the-smallest-paas-implementation-youve-ever-seen/"&gt;I announced Dokku&lt;/a&gt; as an open source "Docker powered mini-Heroku." It quickly became the first killer application for Docker. Designed to be simple and hackable, Dokku enables web developers to run their own single-host PaaS that's directly compatible with Heroku.&lt;/p&gt;
+
+&lt;p&gt;As the project took off, I went on to tackle the challenges of a multi-host PaaS with the &lt;a href="https://flynn.io/"&gt;Flynn&lt;/a&gt; team. Even without me, the Dokku community continued to grow, thanks to the help of new maintainers and contributors. The experimental plugin system allowed all sorts of customizations and extensions of Dokku to flourish.&lt;/p&gt;
+
+&lt;p&gt;Over time, though, the wonderful volunteer maintainers of the project started to get burnt out. Handling issues across a dozen language runtimes and even more plugins is taxing. Many were upstream buildpack or Docker issues, or larger inherent problems of the project requiring stronger leadership to resolve.&lt;/p&gt;
+
+&lt;p&gt;Although Dokku is still used and loved today, without active maintainership and leadership, it was at risk of "bit rot". I came to the conclusion that it was in need of some love from the original author. Luckily, the Deis team was willing to help make this happen and is effectively saving the project from a slow death.&lt;/p&gt;
+
+&lt;h2 id="about-deis"&gt;About Deis&lt;/h2&gt;
+
+&lt;p&gt;Not long after I started collaborating with the Flynn team, another project called Deis came onto the scene. Both projects have the goal of being enterprise grade, multi-host PaaS solutions. Although technically competitive, as open source projects composed of great people, we openly share information and components. As an independent agent, I try to bridge silos and facilitate that kind of sharing and communication. I'd gone out to visit both teams to collaborate, talk shop, and have fun.&lt;/p&gt;
+
+&lt;p&gt;I eventually moved on from Flynn and started independently exploring distributed systems components in a Docker world. Deis continued to adopt and support many of my open source components. They always kept an open dialog with me and others in the Docker community. When I mentioned my plans to reinvigorate Dokku, they were quick to offer help.&lt;/p&gt;
+
+&lt;h2 id="the-sponsorship"&gt;The Sponsorship&lt;/h2&gt;
+
+&lt;p&gt;The timing for this sponsorship is perfect. Deis now requires at least 3 hosts in a cluster, making Dokku the obvious recommendation for smaller deployments. The projects will focus on shared components even more. This sponsorship will also ensure a smooth migration to Deis if a Dokku user wants to go down that path.&lt;/p&gt;
+
+&lt;p&gt;What is Dokku expected to get? First, time and thought put into getting the project modernized and on path for a solid 1.0 release. Among other things, this involves redesigning aspects of the project to make it more sustainable as an open source project.&lt;/p&gt;
+
+&lt;p&gt;Much of the lessons of Flynn and Deis, as well as reflections on Dokku itself, will feed back into Dokku. My plan is to:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;make it more robust and testable&lt;/li&gt;
+  &lt;li&gt;improve code quality and standards&lt;/li&gt;
+  &lt;li&gt;properly direct upstream issues upstream&lt;/li&gt;
+  &lt;li&gt;improve documentation and basic support processes&lt;/li&gt;
+  &lt;li&gt;add popular features, such as addons and Dockerfile build support&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;And if you can believe it, I plan to make it more modular and even simpler.&lt;/p&gt;
+
+&lt;h2 id="yay-dokku"&gt;Yay, Dokku!&lt;/h2&gt;
+
+&lt;p&gt;Along with Deis, I want to thank all the &lt;a href="https://github.com/progrium/dokku/graphs/contributors"&gt;contributors&lt;/a&gt; and maintainers involved in Dokku. I especially want to thank asm89, rhy-jot, plieter, fcoury, and josegonzalez. The project would already be dead without them. If you want to get involved, I'll generally be in the &lt;code&gt;#dokku&lt;/code&gt; channel on Freenode sharing updates as I progress. Most of my work will be in a new branch, but first it will take place in creating and updating components used by Dokku.&lt;/p&gt;
+
+&lt;p&gt;I'm only able to put a day or so of hours a week into the project, but steady, consistent effort and help from the community will ensure Dokku will be around for a long time!&lt;/p&gt;
+
+</content>
+  </entry>
+</feed>

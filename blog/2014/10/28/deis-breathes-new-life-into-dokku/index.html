@@ -1,0 +1,170 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Deis Breathes New Life into Dokku :: Jeff Lindsay, Open source hacker</title>
+    <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/blog/atom.xml" />
+    <link rel="shortcut icon" type="image/x-icon" href="/images/JeffLindsayDeluxe.png" />
+    <link href='https://fonts.googleapis.com/css?family=Dosis:400,300,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700|Lora:400,700,400italic|Vollkorn:400,700' rel='stylesheet' type='text/css'>
+    <link href="/stylesheets/all.css" rel="stylesheet" />
+    
+  </head>
+  <body>
+  <div id="wrapper">
+
+    <header>
+  <div class="container">
+  <div class="row">
+      <div class="col-lg-8 col-lg-offset-1">
+        You're reading the <a href="/blog">blog</a> of Jeff Lindsay (<a href="http://twitter.com/progrium">@progrium</a>). There is also his <a href="/wiki">wiki</a>.
+      </div>
+  </div>
+</div>
+</header>
+
+<main id="main" role="main">
+  <section>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-1">
+          <article>
+            <div class="meta">
+                <div class="date">
+                    <span class="month">Oct</span>
+                    <span class="day">28</span>
+                    <span class="year">2014</span>
+                </div>
+            </div>
+            <h1><a href="/blog/2014/10/28/deis-breathes-new-life-into-dokku/">Deis Breathes New Life into Dokku</a></h1>
+            <p>Today I'm excited to announce that <a href="https://github.com/progrium/dokku">Dokku</a> is now sponsored by my friends of the <a href="http://deis.io/">Deis</a> project. This means that <a href="http://opdemand.com/">OpDemand</a>, the company behind Deis, will be funding part-time development of Dokku and its components.</p>
+
+<h2 id="remember-dokku">Remember Dokku?</h2>
+
+<p>A little over a year ago, <a href="http://progrium.com/blog/2013/06/19/dokku-the-smallest-paas-implementation-youve-ever-seen/">I announced Dokku</a> as an open source "Docker powered mini-Heroku." It quickly became the first killer application for Docker. Designed to be simple and hackable, Dokku enables web developers to run their own single-host PaaS that's directly compatible with Heroku.</p>
+
+<p>As the project took off, I went on to tackle the challenges of a multi-host PaaS with the <a href="https://flynn.io/">Flynn</a> team. Even without me, the Dokku community continued to grow, thanks to the help of new maintainers and contributors. The experimental plugin system allowed all sorts of customizations and extensions of Dokku to flourish.</p>
+
+<p>Over time, though, the wonderful volunteer maintainers of the project started to get burnt out. Handling issues across a dozen language runtimes and even more plugins is taxing. Many were upstream buildpack or Docker issues, or larger inherent problems of the project requiring stronger leadership to resolve.</p>
+
+<p>Although Dokku is still used and loved today, without active maintainership and leadership, it was at risk of "bit rot". I came to the conclusion that it was in need of some love from the original author. Luckily, the Deis team was willing to help make this happen and is effectively saving the project from a slow death.</p>
+
+<h2 id="about-deis">About Deis</h2>
+
+<p>Not long after I started collaborating with the Flynn team, another project called Deis came onto the scene. Both projects have the goal of being enterprise grade, multi-host PaaS solutions. Although technically competitive, as open source projects composed of great people, we openly share information and components. As an independent agent, I try to bridge silos and facilitate that kind of sharing and communication. I'd gone out to visit both teams to collaborate, talk shop, and have fun.</p>
+
+<p>I eventually moved on from Flynn and started independently exploring distributed systems components in a Docker world. Deis continued to adopt and support many of my open source components. They always kept an open dialog with me and others in the Docker community. When I mentioned my plans to reinvigorate Dokku, they were quick to offer help.</p>
+
+<h2 id="the-sponsorship">The Sponsorship</h2>
+
+<p>The timing for this sponsorship is perfect. Deis now requires at least 3 hosts in a cluster, making Dokku the obvious recommendation for smaller deployments. The projects will focus on shared components even more. This sponsorship will also ensure a smooth migration to Deis if a Dokku user wants to go down that path.</p>
+
+<p>What is Dokku expected to get? First, time and thought put into getting the project modernized and on path for a solid 1.0 release. Among other things, this involves redesigning aspects of the project to make it more sustainable as an open source project.</p>
+
+<p>Much of the lessons of Flynn and Deis, as well as reflections on Dokku itself, will feed back into Dokku. My plan is to:</p>
+
+<ul>
+  <li>make it more robust and testable</li>
+  <li>improve code quality and standards</li>
+  <li>properly direct upstream issues upstream</li>
+  <li>improve documentation and basic support processes</li>
+  <li>add popular features, such as addons and Dockerfile build support</li>
+</ul>
+
+<p>And if you can believe it, I plan to make it more modular and even simpler.</p>
+
+<h2 id="yay-dokku">Yay, Dokku!</h2>
+
+<p>Along with Deis, I want to thank all the <a href="https://github.com/progrium/dokku/graphs/contributors">contributors</a> and maintainers involved in Dokku. I especially want to thank asm89, rhy-jot, plieter, fcoury, and josegonzalez. The project would already be dead without them. If you want to get involved, I'll generally be in the <code>#dokku</code> channel on Freenode sharing updates as I progress. Most of my work will be in a new branch, but first it will take place in creating and updating components used by Dokku.</p>
+
+<p>I'm only able to put a day or so of hours a week into the project, but steady, consistent effort and help from the community will ensure Dokku will be around for a long time!</p>
+
+
+          </article>
+        </div>
+
+        <div class="col-lg-3" id="sidebar">
+    <img src="https://dl.dropboxusercontent.com/u/2096290/Blog/progrium2016.png" id="photo" title="Jeff Lindsay" />
+    <p>
+        Jeff Lindsay is a design-minded software programmer living in Austin, Texas. 
+    </p>
+    <p>
+        He founded <a href="http://gliderlabs.com">Glider Labs</a>, an open source innovation lab.
+        There he writes <a href="http://gliderlabs.com/projects">open source developer infrastructure</a> 
+        to make the world more programmable.
+    </p>
+    <p><a href="/wiki/InfluenceAndAffiliations/">Learn more about Jeff.</a></p>
+    <h5>
+      <a rel="me" href="https://twitter.com/progrium"><i class="fa fa-twitter-square fa-2x"></i></a>
+      <a rel="me" href="https://github.com/progrium"><i class="fa fa-github fa-2x"></i></a>
+      <a ref="me" href="https://instagram.com/progrium"><i class="fa fa-instagram fa-2x"></i></a>
+      <a ref="me" href="https://vimeo.com/progrium"><i class="fa fa-vimeo-square fa-2x"></i></a>
+    </h5>
+</div>
+
+    </div>
+</div>
+</section>
+<section class="subscribe" style="padding: 20px 0;">
+  <div class="row">
+  <div class="col-lg-8 col-lg-offset-1">
+    <i class="fa fa-envelope"></i>
+    <a href="http://eepurl.com/bUo8Rb">Subscribe</a> to get future blog posts sent to you via email.
+  </div>
+  </div>
+</section>
+
+<section class="alternate">
+<div class="container">
+  <div class="row">
+  <div id="disqus_thread" class="col-lg-8 col-lg-offset-1"></div>
+  <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'progrium'; // required: replace example with your forum shortname
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </div>
+</div>
+</section>
+
+</main>
+
+
+
+    <footer>
+      <div class="container clearfix">
+        &copy; 2017 Jeff Lindsay
+      </div>
+    </footer>
+
+  </div>
+  <script src="/javascripts/all.js"></script>
+  <script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+        <script type="text/javascript">
+        try {
+        var pageTracker = _gat._getTracker("UA-6824126-1");
+        pageTracker._trackPageview();
+        } catch(err) {}</script>
+    <!--script type="text/javascript">
+      var host = "progrium.com";
+      if ((host == window.location.host) && (window.location.protocol != "https:"))
+        window.location.protocol = "https";
+    </script-->
+    <script type="text/javascript">
+      
+    </script>
+  </body>
+</html>

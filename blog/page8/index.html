@@ -1,0 +1,383 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Jeff Lindsay, Open source hacker</title>
+    <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/blog/atom.xml" />
+    <link rel="shortcut icon" type="image/x-icon" href="/images/JeffLindsayDeluxe.png" />
+    <link href='https://fonts.googleapis.com/css?family=Dosis:400,300,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700|Lora:400,700,400italic|Vollkorn:400,700' rel='stylesheet' type='text/css'>
+    <link href="/stylesheets/all.css" rel="stylesheet" />
+    
+  </head>
+  <body>
+  <div id="wrapper">
+
+    <header>
+  <div class="container">
+  <div class="row">
+      <div class="col-lg-8 col-lg-offset-1">
+        You're reading the <a href="/blog">blog</a> of Jeff Lindsay (<a href="http://twitter.com/progrium">@progrium</a>). There is also his <a href="/wiki">wiki</a>.
+      </div>
+  </div>
+</div>
+</header>
+
+<main id="main" role="main">
+  <section>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-1">
+          <article>
+            <div class="meta">
+                <div class="date">
+                    <span class="month">Nov</span>
+                    <span class="day">26</span>
+                    <span class="year">2012</span>
+                </div>
+            </div>
+            <h1><a href="/blog/2012/11/26/x-callback-header-an-evented-web-building-block/">X-Callback Header: Evented Web Building Block</a></h1>
+            <div class="alert alert-info">
+Since this posting, we decided to adopt "best current
+practice" and drop the X- prefix as described in <a href="http://tools.ietf.org/html/rfc6648">RFC 6648</a>. Future posts refer to this as the Callback header.
+</div>
+<p>Webhooks is the simple concept of HTTP callbacks. It expands on the simple request/response model of HTTP, giving you the semantics of <a href="http://j.mp/10EitT8">callbacks in programming</a>. Request/response gives you one response for one request in one synchronous operation. It's like invoking a function and getting a return value. With callbacks, after you register a callback, the callback will receive one or more invocations, perhaps minutes or hours apart.</p>
+
+<p>Callbacks are a necessary component of any evented or reactor-based system, like Node.js, Twisted, or EventMachine. So, naturally, HTTP callbacks are necessary to achieve <a href="http://progrium.com/blog/2012/11/19/from-webhooks-to-the-evented-web/">the Evented Web</a>.</p>
+
+<p>Modeling callbacks in HTTP is somewhat straightforward. The callback is a URL. You perform an HTTP request against an application to register a callback URL. The application then performs an HTTP request to that URL to invoke that callback.</p>
+
+<p>Those high-level requirements are enough to set anybody in the right direction to effectively implement webhooks or HTTP callbacks for their application. The problem is that now every application implements the specifics differently. While this is fine to provide a callback paradigm for each application, it doesn't let us <em>build</em> on this paradigm. The Evented Web needs to agree on some standards, and the X-Callback header is one of those standards.</p>
+
+<h3 id="x-callback-header">X-Callback Header</h3>
+
+<p>The X-Callback header is a proposal for a common way to describe HTTP callbacks, primarily in the case of registering them. It does not get into the specifics for different ways of using HTTP callbacks, so it's more of a building block for APIs or larger protocols such as HTTP Subscriptions, which I mentioned <a href="http://progrium.com/blog/2012/11/19/from-webhooks-to-the-evented-web/">in my previous post</a>.</p>
+
+<p>Here's what it looks like to use X-Callback:</p>
+
+<pre class="highlight plaintext"><code>X-Callback: &lt;http://example.com/callback&gt;; method="post"
+</code></pre>
+
+<p>The format is directly borrowed from the <a href="http://www.w3.org/Protocols/9707-link-header.html">Link header</a> used for responses. You provide a URL and then optional key-value parameters. In the case above, the HTTP method for invoking the callback was specified as a parameter.</p>
+
+<p>Here is a more formal description of the header:</p>
+
+<pre class="highlight plaintext"><code>X-Callback     = "X-Callback" ":" #("&lt;" URI "&gt;" *( ";" callback-param ) )
+callback-param  = token [ "=" ( token | quoted-string ) ]
+</code></pre>
+
+<p>Since this is just the beginning of the conversation, there are no "built-in" callback parameters in this definition. They're effectively all extensions. However, these are what I'd propose for standard parameters:</p>
+
+<ul>
+  <li><strong>method</strong>: The HTTP method preferred for invoking this callback. Servers can ignore or override based on their policies, but this lets the requester optionally state preference.</li>
+  <li><strong>secret</strong>: The secret to be used for signing callback requests. More on this in the next section.</li>
+  <li><strong>rel</strong>: The relationship of this callback to this request, similar to the rel of the Link header. This lets you specify the role of this callback, which is useful when multiple callbacks are provided. It effectively lets you classify the callbacks.</li>
+</ul>
+
+<h3 id="authenticating-with-signatures">Authenticating with Signatures</h3>
+
+<p>A common pattern across most implementations of webhooks has been the use of signatures for authenticating the callback "invocation" requests. Either built-in to the X-Callback header spec or maybe as a separate extension, a standard way of providing a secret then building and including a signature would be a Good Idea. The following is a proposal based on PubSubHubbub's signature model, but is not that different from the majority of implementations out there.</p>
+
+<p>We start with a shared secret. Transmission of this secret can be done out of band (through a dashboard, for example), or the secret can be provided via the <em>secret</em> parameter of the X-Callback header during registration.</p>
+
+<p>The secret can then be used with HMAC to sign anything. In the case of callbacks, it would sign the body of the callback request body. Since you can use different hashing techniques with HMAC, the technique used is specified along with a hexadecimal digest of the HMAC signature. This is put in the X-Signature header of requests:</p>
+
+<pre class="highlight plaintext"><code>X-Signature: sha1=0beec7b5ea3f0fdbc95d0dd47f3c5bc275da8a33
+</code></pre>
+
+<p>Now the callback handler can rebuild this signature knowing the secret and having the content body and the hash technique. Authenticating is then comparing the built signature with the one provided in the X-Signature header.</p>
+
+<p>Signing lets the callback handler be more certain of the source without requiring SSL. Signatures become much less necessary if all requests are using HTTPS. But having this simple complement to X-Callback makes it easy when you need it, and may help unify all the different approaches that are all effectively doing the same thing.</p>
+
+<h3 id="example-callback-flow">Example Callback Flow</h3>
+
+<p>Let's use all this in an example, showing you the actual HTTP requests. First, we're going to register a callback at a particular endpoint:</p>
+
+<pre class="highlight plaintext"><code>POST /callbacks/register HTTP/1.1
+Host: server-example.com
+X-Callback: &lt;http://example.com/callback&gt;; method="post"; secret="opensesame"
+Content-Length: 0
+</code></pre>
+
+<p>The server can respond however it likes since X-Callback header doesn't specify anything more than how to hand the server a callback. Let's assume it returned 200 OK.</p>
+
+<p>Now, whenever it likes, the server is going to be performing an HTTP POST on the callback URL. Since a secret was provided, the server will be providing a signature using the X-Signature header. Here's what one of those requests might look like:</p>
+
+<pre class="highlight plaintext"><code>POST /callback HTTP/1.1
+Host: example.com
+Content-Type: application/json
+Content-Length: 26
+X-Signature: sha1=76afe1da675cf6d3d59c71a4af44dafc69fd03f0
+
+{"payload": "Hello world"}
+</code></pre>
+
+<p>You'll notice we've stayed completely out of the content layer of HTTP. This is quite intentional. This gives implementors lots of flexibility and keeps this a "pure" extension to HTTP.</p>
+
+<h3 id="a-building-block">A Building Block</h3>
+
+<p>As I've mentioned, this header is intended to be used in APIs and protocols that use callbacks in different ways. The obvious example is HTTP Subscriptions, which will let you subscribe to events using HTTP callbacks.</p>
+
+<p>Another example, which I'll also talk about soon, is HTTP Response Redirection. Regular <a href="http://en.wikipedia.org/wiki/URL_redirection#HTTP_status_codes_3xx">HTTP Redirection</a> lets the server redirect the client's request to another URL, whereas Response Redirection lets the client redirect where the server sends the response using an HTTP callback.</p>
+
+<p>The X-Callback header is simple, focused, and content neutral. Hopefully this makes it a powerful building block for other technologies of the Evented Web.</p>
+
+          </article>
+          <a href="/blog/2012/11/26/x-callback-header-an-evented-web-building-block/#disqus_thread">Comments</a>
+          <br /><br />
+        </div>
+
+        <div class="col-lg-3" id="sidebar">
+    <img src="https://dl.dropboxusercontent.com/u/2096290/Blog/progrium2016.png" id="photo" title="Jeff Lindsay" />
+    <p>
+        Jeff Lindsay is a design-minded software programmer living in Austin, Texas. 
+    </p>
+    <p>
+        He founded <a href="http://gliderlabs.com">Glider Labs</a>, an open source innovation lab.
+        There he writes <a href="http://gliderlabs.com/projects">open source developer infrastructure</a> 
+        to make the world more programmable.
+    </p>
+    <p><a href="/wiki/InfluenceAndAffiliations/">Learn more about Jeff.</a></p>
+    <h5>
+      <a rel="me" href="https://twitter.com/progrium"><i class="fa fa-twitter-square fa-2x"></i></a>
+      <a rel="me" href="https://github.com/progrium"><i class="fa fa-github fa-2x"></i></a>
+      <a ref="me" href="https://instagram.com/progrium"><i class="fa fa-instagram fa-2x"></i></a>
+      <a ref="me" href="https://vimeo.com/progrium"><i class="fa fa-vimeo-square fa-2x"></i></a>
+    </h5>
+</div>
+
+    </div>
+</div>
+</section>
+
+<section class="subscribe" style="padding: 20px 0;">
+  <div class="row">
+  <div class="col-lg-8 col-lg-offset-1">
+    <i class="fa fa-envelope"></i>
+    <a href="http://eepurl.com/bUo8Rb">Subscribe</a> to get future blog posts sent to you via email.
+  </div>
+  </div>
+</section>
+
+
+<section  class="alternate">
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-1">
+          <article>
+            <div class="meta">
+                <div class="date">
+                    <span class="month">Nov</span>
+                    <span class="day">19</span>
+                    <span class="year">2012</span>
+                </div>
+            </div>
+            <h1><a href="/blog/2012/11/19/from-webhooks-to-the-evented-web/">From Webhooks to the Evented Web</a></h1>
+            <p>Back in 2007 I started thinking and talking a lot about <a href="http://progrium.com/blog/2007/05/03/web-hooks-to-revolutionize-the-web/">an idea called webhooks</a>. Over the following few years I started evangelizing it. I spent a lot of my free time giving talks and building tools around the idea of webhooks. Some of these tools are still around today, including <a href="http://localtunnel.com">Localtunnel</a> and <a href="http://requestb.in">RequestBin</a> (originally PostBin). There were others that might not be around anymore: <a href="http://mailhooks.com">MailHooks</a>, <a href="http://clickhooks.com">ClickHooks</a>, <a href="http://twitterhooks.com">TwitterHooks</a>, <a href="http://scriptlets.org">Scriptlets</a>, and a few others.</p>
+
+<p>Webhooks wasn't really a new technology in the sense that there was a specification or tangible piece of software. It was more of an architectural pattern, and a loose one at that. To me it was just a different way to think about web applications, and it opened up a lot of new possibilities.</p>
+
+<p>I was really excited by those possibilities, so I started telling people about it. The only problem was that it was this semi-vague idea. I often spoke in high-level notions. It was hard for some people to understand at the time. I think some people mostly got it, but a lot of people didn't get it and thought they did.</p>
+
+<h3 id="confusion">Confusion</h3>
+
+<p>For example, the name "webhooks" was more about the pattern than any specific part of how it works. Webhooks involve two parts: an application that triggers a URL, and a handler at that URL. If you were to ask "where is the webhook?" different people will answer you differently. Some say it's the trigger side. Some say it's the handler side. For me, "a webhook" is the combination of both a trigger and a handler.</p>
+
+<p>It also didn't help that there was never a spec. I always avoided a spec because there were a lot of different implementations already out there, and you might implement it slightly different for different use cases. It made sense to me to just keep it a general pattern and not limit what was possible.</p>
+
+<p>I didn't want to say, "Well, if you want to implement webhooks, it's got to be JSON. And use this payload structure. And this is the API for registering them. Otherwise, it's not webhooks." Because if you didn't do those things in a particular way, they'd still be webhooks to me.</p>
+
+<h3 id="mild-success">Mild Success</h3>
+
+<p>After a while, the idea got out there and companies like Google, Facebook, Wordpress, GitHub, Twilio, and other startups started implementing it. Five years later and I still often run into new applications or open source projects using the term webhooks. But even after all this time, there's still a lot of cool stuff that I wanted to emerge that hasn't really happened yet.</p>
+
+<p>Some of it is starting to happen, though. For example, how do you write these handlers script? I really didn't believe in being able to just plug apps together like pipes. That's something that could come later and would definitely need a spec. Instead, I wanted people to actually write handler scripts with code. That way they could make something that did whatever they wanted, exactly how they wanted.</p>
+
+<p>To facilitate that, I wanted a service that would let you write and it would host for you these little handler scripts for processing HTTP webhook requests. I actually built a prototype of this called Scriptlets. It was a web app where you could write JavaScript, hit save, and then you'd have a little script at a URL that you could use for webhooks.</p>
+
+<p>Scriptlets didn't get very popular, though I didn't push it very hard. There was a lot I wanted to do with it but there wasn't enough demand to drive development, and I was so busy that it eventually became defunct.</p>
+
+<p>Four years later, we actually have a service like this. I discovered it about a week ago. It's called <a href="http://webscript.io">Webscript</a>. It's basically Scriptlets done right. Webscript is a web app where you can write Lua, hit save, and then you've got little web service. It has basically everything you need to write webhook handler scripts.</p>
+
+<h3 id="the-ecosystem">The Ecosystem</h3>
+
+<p>Slowly, people <em>are</em> building out pieces of the ecosystem. You could say that the webhooks paradigm was really about this ecosystem. At some point I realized this and decided to give that ecosystem a name. It turned out the ecosystem was really what I was getting at with webhooks. That's where the magic was.</p>
+
+<p>I started calling this ecosystem the Evented Web. Like the Semantic Web and "programmable web," it's an umbrella term for a family of technologies coupled with a vision of what the world could be like. The Evented Web envisions a world where the programmable web that we have today of traditional web APIs is complemented by APIs that produce events through webhooks. Adding a callback mechanism to web APIs makes the web more like a giant evented framework.</p>
+
+<p>Just like with Node.js, perhaps the most popular evented framework, there's all kinds of innovation happening in the community. It's a new way of thinking about things. Pipes and streams come up a lot in the Node.js world now, and similar sorts of things can be done across web applications with an Evented Web.</p>
+
+<p>By the time I started talking more about the Evented Web instead of just webhooks, I was already pretty tired of talking about it all. I was sort of "over it" and I started to not care if people didn't see or share this vision. I continued to think it was cool, but I started to move on to other interests.</p>
+
+<h3 id="the-future">The Future</h3>
+
+<p>These days, the people that really get it are starting to build some really neat things. Webhooks have spread enough that you can at least reference them or the idea of HTTP callbacks and not have to explain yourself. Now is maybe the perfect time for me to put a few specific projects into motion that could at least provide a tangible foundation for building out the Evented Web. Not just vague notions.</p>
+
+<p>The most immediate thing is a lightweight spec for implementing webhooks. Specifically I mean registering a callback URL and invoking the callback URL. I've intentionally put this off for a lot of reasons. I didn't want to get it wrong. I didn't want to leave people out. I wanted to capture best practices, which for the longest time we hadn't them figured out. But now might be the perfect time because there is a lot on the verge of happening.</p>
+
+<p>Stay tuned for my proposal for HTTP Subscriptions. It will be the first of several really cool developments for the Evented Web, from me and from others.</p>
+
+          </article>
+          <a href="/blog/2012/11/19/from-webhooks-to-the-evented-web/#disqus_thread">Comments</a>
+        </div>
+    </div>
+</div>
+</section>
+<section >
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-1">
+          <article>
+            <div class="meta">
+                <div class="date">
+                    <span class="month">Sep</span>
+                    <span class="day">30</span>
+                    <span class="year">2012</span>
+                </div>
+            </div>
+            <h1><a href="/blog/2012/09/30/piping-into-and-out-of-the-cloud-with-skypipe/">Piping into and out of the cloud with skypipe</a></h1>
+            <p><a href="https://github.com/progrium/skypipe">Skypipe</a> is a magical command line tool that lets you easily pipe data across terminal sessions regardless of whether the sessions are on the same machine, across thousands of machines, or even behind a firewall. It gives you named pipes in the sky and lets you pipe data <em>anywhere</em>.</p>
+
+<p>I built it while on vacation the last couple months. I wasn't intending
+to write software while on my trip, but I just couldn't help myself.</p>
+
+<p>Skypipe is conceptually similar to named pipes or netcat, but with more power and a simpler interface. Here is a basic example using skypipe as you would a regular named pipe to gzip a file across shells:</p>
+
+<pre class="highlight plaintext"><code>$ skypipe | gzip -9 -c &gt; out.gz
+</code></pre>
+
+<p>Your skypipe is now ready to receive some data from another shell process:</p>
+
+<pre class="highlight plaintext"><code>$ cat file | skypipe
+</code></pre>
+
+<p>Unlike named pipes, however, <em>this will work across any machines connected to the Internet</em>. You don't have to specify a host address or set up "listen mode" like you would with netcat. In fact, unlike netcat, which is point to point, you could use skypipe for log aggregation. Here we'll used named skypipes. Run this on several hosts:</p>
+
+<pre class="highlight plaintext"><code>$ tail -f /var/log/somefile | skypipe logs
+</code></pre>
+
+<p>Then run this on a single machine:</p>
+
+<pre class="highlight plaintext"><code>$ skypipe logs &gt; /var/log/aggregate
+</code></pre>
+
+<p>This can also broadcast to multiple hosts. With the above, you can "listen in" by running this from your laptop, even while behind a NAT:</p>
+
+<pre class="highlight plaintext"><code>$ skypipe logs
+</code></pre>
+
+<p>You can also temporarily store data or files in the pipe, even several files, until you pull them out. On one machine load some files into a named skypipe:</p>
+
+<pre class="highlight plaintext"><code>$ cat file_a | skypipe files
+$ cat file_b | skypipe files
+</code></pre>
+
+<p>Now, from somewhere else, pull them out in order:</p>
+
+<pre class="highlight plaintext"><code>$ skypipe files &gt; new_file_a
+$ skypipe files &gt; new_file_b
+</code></pre>
+
+<p>Lastly, you can use skypipe like the channel primitive in Go for coordinating between shell scripts. As a simple example, we'll use skypipe to wait for an event triggered by another script:</p>
+
+<pre class="highlight shell"><code><span class="c">#!/bin/bash</span>
+<span class="nb">echo</span> <span class="s2">"I'm going to wait until triggered"</span>
+skypipe trigger
+<span class="nb">echo</span> <span class="s2">"I was triggered!"</span>
+</code></pre>
+
+<p>Triggering is just sending an EOF over the pipe, causing the listening skypipe to terminate. We can do this with a simple idiom:</p>
+
+<pre class="highlight plaintext"><code>$ echo | skypipe trigger
+</code></pre>
+
+<h3 id="how-does-this-magic-work">How does this magic work?</h3>
+
+<p>You'll need a free <a href="https://www.dotcloud.com/">Dotcloud</a> account to use skypipe, but you don't need to know anything about using Dotcloud to use skypipe.</p>
+
+<p>When you first use skypipe it will want you to run a setup command (<code>skypipe --setup</code>). This will deploy a very simple messaging server to Dotcloud. From then on, skypipe will use your account to transparently find and use this server, no matter where you are. The server is managed automatically and runs on Dotcloud free of charge, so you never need to think about it.</p>
+
+<h3 id="software-with-a-service">Software with a service!</h3>
+
+<p>This is a new paradigm of creating tools that transparently leverage the cloud to create magical experiences. It's not quite software as a service, it's software <em>with</em> a service. Nobody is using a shared, central server, and no one needs to setup or manage their own server. The <em>software</em> deploys and manages its own server for you.</p>
+
+<p>Thanks to platforms like Heroku and Dotcloud, we can now build software leveraging features of software as a service that is <em>packaged and distributed like normal open source software</em>.</p>
+
+<p>I'm excited to see what else can be done with this pattern. Naturally, I'm already thinking about a number of other potential uses.</p>
+
+<h3 id="using-skypipe-and-getting-involved">Using skypipe and getting involved</h3>
+
+<p>Skypipe is still an alpha piece of software. Be warned, there are some rough edges. That said, you can install skypipe with pip:</p>
+
+<pre class="highlight plaintext"><code>$ pip install skypipe
+</code></pre>
+
+<p>The user experience is not yet entirely optimized. One of the biggest issues is that it needs to check for the server on every use. This can be done less often and cached, which would make it much snappier and on par with most command line utilities.</p>
+
+<p>This and a few other issues are already tracked in <a href="https://github.com/progrium/skypipe/issues">Github Issues</a>; feel free to take a whack at them. The codebase is intentionally small, documented, and written to be read, although there are no tests yet.</p>
+
+<p>The project also depends on ZeroMQ, which requires a C extension to be compiled. Even using the pyzmq-static package, you still need certain header files (python.h at the very least) to install skypipe, and not every environment has these. Ideally, I'd like to find a way to package skypipe in a way that includes all its dependencies. Perhaps <a href="http://www.pyinstaller.org/">PyInstaller</a> can help with this.</p>
+
+<p>Another feature I'm sure a lot of people will want (or complain about) is being able to run your own server and ignore the software with a service aspect. Since the server is packaged with the client, this is not far off from happening. Somebody just needs to make it happen.</p>
+
+<p>Contribution ideas aside, I'm hoping skypipe will be useful to others besides myself. I was really going for a magical tool. I think a big part of this magic is the use of software with a service, which I consider a bit novel in itself. What do you think?</p>
+
+          </article>
+          <a href="/blog/2012/09/30/piping-into-and-out-of-the-cloud-with-skypipe/#disqus_thread">Comments</a>
+        </div>
+    </div>
+</div>
+</section>
+
+
+<section class="alternate">
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+        <ul class="pager article">
+          <li class="previous">
+            <a href="/blog/page9/">&larr; Older</a>
+          </li>
+
+          <li class="next">
+            <a href="/blog/page7/">Newer &rarr;</a>
+          </li>
+        </ul>
+        </div>
+    </div>
+</div>
+</section>
+
+</main>
+
+
+
+    <footer>
+      <div class="container clearfix">
+        &copy; 2017 Jeff Lindsay
+      </div>
+    </footer>
+
+  </div>
+  <script src="/javascripts/all.js"></script>
+  <script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+        <script type="text/javascript">
+        try {
+        var pageTracker = _gat._getTracker("UA-6824126-1");
+        pageTracker._trackPageview();
+        } catch(err) {}</script>
+    <!--script type="text/javascript">
+      var host = "progrium.com";
+      if ((host == window.location.host) && (window.location.protocol != "https:"))
+        window.location.protocol = "https";
+    </script-->
+    <script type="text/javascript">
+      
+    </script>
+  </body>
+</html>

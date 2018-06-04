@@ -1,0 +1,295 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Jeff Lindsay, Open source hacker</title>
+    <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/blog/atom.xml" />
+    <link rel="shortcut icon" type="image/x-icon" href="/images/JeffLindsayDeluxe.png" />
+    <link href='https://fonts.googleapis.com/css?family=Dosis:400,300,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700|Lora:400,700,400italic|Vollkorn:400,700' rel='stylesheet' type='text/css'>
+    <link href="/stylesheets/all.css" rel="stylesheet" />
+    
+  </head>
+  <body>
+  <div id="wrapper">
+
+    <header>
+  <div class="container">
+  <div class="row">
+      <div class="col-lg-8 col-lg-offset-1">
+        You're reading the <a href="/blog">blog</a> of Jeff Lindsay (<a href="http://twitter.com/progrium">@progrium</a>). There is also his <a href="/wiki">wiki</a>.
+      </div>
+  </div>
+</div>
+</header>
+
+<main id="main" role="main">
+  <section>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-1">
+          <article>
+            <div class="meta">
+                <div class="date">
+                    <span class="month">Jan</span>
+                    <span class="day">26</span>
+                    <span class="year">2010</span>
+                </div>
+            </div>
+            <h1><a href="/blog/2010/01/26/notifyio-brings-notifications-to-the-web/">Notify.io brings notifications to the web</a></h1>
+            <blockquote>
+  <p><strong>Update:</strong> Notify.io is currently out of service as it is being re-imagined in
+smaller pieces based on open standards. Contact me for more
+information.</p>
+</blockquote>
+
+<p>In October 2009 I started a project called <a href="http://www.notify.io/">Notify.io</a> and a month later announced it. I talked about how it will bring notifications to the web. Now that it's basically alpha complete, I'll give you a quick walkthrough of what makes it so great.</p>
+
+<center><iframe width="560" height="315" src="http://www.youtube.com/embed/Fs9NauQ2M6o" frameborder="0"> </iframe></center>
+
+<h3 id="overview">Overview</h3>
+<p>At a really high level, you can think of Notify.io as a notification router. As a web service, it provides a singleton endpoint for any web-connected program, whether a web application, desktop application or user script, to send notifications to somebody. For users, you can control what notifications you get and how you get them. In this way, Notify.io is like a global, web-accessable version of the popular <a href="http://growl.info/">Growl</a> application for OS X (which should honestly just ship with OS X). Only it's even better.</p>
+
+<h3 id="desktop-notifications">Desktop Notifications</h3>
+<p>The original inspiration for Notify.io was to make Growl more useful by fixing its ability to receive notifications from the Internet. Out of the box, Growl is effectively only good for notifications from sources running on your machine. If you wanted to get notifications from a web app, you'd have to wait for them to release a desktop notifier, which hopefully would use Growl to actually display the notifications. So you end up with all these desktop notifiers running for some apps, and have no option of desktop notifications for others.</p>
+
+<p>This is probably the killer feature of Notify.io: it lets you get desktop notifications from any web app that supports it, which is an order of magnatude easier for them to do than build their own desktop notifier.</p>
+
+<h3 id="sources-and-outlets">Sources and Outlets</h3>
+<p>The language of Notify.io is based around Sources and Outlets. Sources are pretty straightforward. They're a source of notifications. They could represent an application, script, company, person (or perhaps object?) that can send you notifications.</p>
+
+<p>Outlets repesent the other major feature of Notify.io. They're ways you can get a notification. The Desktop Notifier is your first and default outlet, but is just one of several options. Currently supported Outlets besides Desktop Notifier are Email, Jabber IM, and Webhooks. Outlets to look forward to are SMS, Twitter, IRC, and perhaps telephone.</p>
+
+<p>The magic is in routing notifications from Sources to Outlets. Currently this is a simple mapping of Source to Outlet. For example, you can get notifications from Source A on your desktop, while notifications from Source B go to IM. This simplistic routing is just the beginning. We'll talk about how we'll do advanced routing when we get to the Roadmap.</p>
+
+<h3 id="the-nio-client">The Nio Client</h3>
+<p>For developers, it's worth mentioning that the pipe for our Desktop Notifier is really just a Comet HTTP stream. It can be consumed by pretty much anything. We were originally talking with Growl and authors of other desktop notifiers of direct integration. This is still a possibility, but just so we could move forward, we built our own client for OS X. Clients for other systems are available (but not yet "officially" supported) or are in progress, including Windows and Android.</p>
+
+<p>Our OS X client is called Nio, short for Notify.io, so you can pronounce it N-I-O, but I tend to pronounce it "neo". It's basically just an application that sits in your menu bar listening to HTTP streams (yes, plural) for notifications and pipes them into Growl.</p>
+
+<p>For ease of installing streams, we made it handle files of the extension ListenURL. Once Nio is installed, you can download a ListenURL file containing a URL and it gets installed by Nio. The URL we give you is basically a "capability URL" or secret URL. This means streams are not super secure, but this is by design. If you wanted, you could share your URL with somebody so you both get notifications sent to that Outlet. You can always delete the Outlet and make another to disable that URL.</p>
+
+<p>The other cool thing about our client is that it has a shell script notification hook. This means you can have notifications trigger a shell script that's passed the notification details. This is pretty powerful because it means you can do things like create your own local logging, hear your notifications with text-to-speech, or make certain notifications trigger a more obstrusive means of notifying you, such as Quicksilver's Large Type feature. This kind of programmability is central to our approach to design, as you'll see later on in the Roadmap.</p>
+
+<h3 id="simple-api-and-approval-model">Simple API and Approval Model</h3>
+<p>For proper adoption, we need web apps to integrate Notify.io, so we have a super simple API for Sources. It's a simple REST API based on an endpoint constructed by the target of your notification. Like <a href="http://en.gravatar.com/">Gravatar</a>, we use an MD5 hash of a user's email address to identify targets. For example, to send a notification to test@example.com, you'd do an HTTP POST to this URL:</p>
+
+<pre class="highlight plaintext"><code>http://api.notify.io/v1/notify/55502f40dc8b7c769880b10874abc9d0
+</code></pre>
+
+<p>You'd pass a few parameters, with at least your API key (meaning you need an account) and the text you want to send, and optionally an icon URL, link URL, title text and whether the notification should be "sticky". That's it. The request should respond immediately so it may be quick enough to be done inline in your app, but we recommend it be done asynchronously.</p>
+
+<p>Then what happens is the first notification you send actually triggers a notification to that user that you want to send them notifications. If they accept, future notifications will be sent and your previous notifications will show up in their history. This may change to replay previous notifications on approval, but the point here is the user has to approve notifications before they get them. In this way, it's similar to Jabber's approval model and helps avoid spammers.</p>
+
+<h3 id="public-service-software">Public Service Software</h3>
+<p><a href="http://code.google.com/p/notify-io/">Notify.io and its clients are open source</a>. The service is free. Or rather, it's not-for-profit donationware. Notify.io is being run under a model I'm developing called POSS, the goal of which is to automate/abstract away the maintainence and funding of its operation. The end result should be: the service exists, it's open source, and some in the developer community can deploy changes. But no single person is financially responsible for it, and it's run on maintained cloud infrastructure. In this case it's mostly App Engine.</p>
+
+<p>This means that Notify.io is not a startup. It's public infrastructure. Ideally, I'm not even in the loop. It should be a self-sustaining public service. This is not fully realized, but it will be as it starts to consume more resources. For more information, you can <a href="http://blogrium.wordpress.com/2009/10/29/public-open-source-services/">read more</a> on POSS or <a href="http://groups.google.com/group/poss-talk">join our discussion group</a>.</p>
+
+<p>For now, the important thing is that Notify.io is open source. This means anybody can contribute bug fixes, new outlets, new desktop clients, etc.</p>
+
+<h3 id="roadmap">Roadmap</h3>
+<p>Okay, sure, Notify.io is pretty cool now. But here are some of the major things that will be coming soon. Hopefully with your help!</p>
+
+<p><em>Advanced Routing and Filters</em><br />
+From the beginning, I wanted really powerful routing and filtering. My evangelism of webhooks has given me the obvious answer to this, but in a more integrated way. Basically, how do you allow any routing scheme imagineable by users? Let them write code. Originally it was going to be powered by <a href="http://www.scriptlets.org/">Scriptlets</a>, but since I split the eval engine out as <a href="http://github.com/progrium/DrEval">DrEval</a>, it will be based on that.</p>
+
+<p>Basically, just a imagine a UI with a little textarea for writing JavaScript that can make web calls. Route notifications based on your IM status, your location, what music you're listening to, arbitrary time schedules, or anything you can code.</p>
+
+<p><em>More Outlets</em><br />
+Obviously, more Outlets are good. Obvious ones are IRC, SMS, and Twitter DM. With Twilio we can do voice call notifications. Integration with push clients like the iPhone's Prowl app would be easy to do. Our outlet system is very simple, so you can <a href="http://github.com/progrium/notify-io/blob/master/www/outlet_types.py">look at the source of our existing ones</a>, write an outlet and it's likely we'll deploy it.</p>
+
+<p><em>OpenID Support</em><br />
+Right now, you authenticate with Google. I don't believe in creating authentication systems, and Google was the quickest given the platform. It's also pretty popular and ensures you have an email address we can use. However, there are plenty of people that don't like the idea of using their Google Account, so at some point we'll support OpenID login and then go from there.</p>
+
+<p><em>Multiple Email Support</em><br />
+Ideally, a web app can use whatever email address you used to register with them to send you notifications. However, unless Gmail is your primary email you use for registration, they'll still need to ask you for your email. It's the Gravatar model. So like Gravatar, we'll need to let you add multiple emails to your account, allowing web applications to be able to send notifications based on any of them.</p>
+
+<p><em>Convenience Libraries</em><br />
+Our API is simple, but people are lazy. We're currently working on convenience libraries for popular langauges that it make that much easier to integrate with Notify.io. If you use a neat language, you should make a libnio package for it!</p>
+
+<p><em>Ad-hoc Sources</em><br />
+Sources require an account, which is a bit heavyweight. Sometimes you want to create your own distinct sources to share with others or use in your scripts to easily send yourself notifications. This is the idea of Ad-hoc Sources, inspired by David Reid and capability URLs. The idea is simple: create an ad-hoc source and you get a secret URL. This URL acts just like the notify API endpoint, only you don't need an API key. You can use this in public scripts or give it to others to send you notifications, and if it's ever abused or falls in the wrong hands, just delete it and make another.</p>
+
+<p><em>More Supported Clients</em><br />
+A developer in Japan started a Windows client based on Nio that we're planning to support as our primary Windows client. Another developer is working on an Android client. iPhone users have Prowl, so once there is a Prowl outlet, you can get them on your iPhone. But Prowl is not free, so perhaps it would be helpful if we had our own iPhone client. There are the beginnings of a Linux/libnotify client. These are all ways you can start contributing to Notify.io. ;)</p>
+
+<p>That's about it. You can probably see why I describe Notify.io as the open notification platform of the web. It's simple, powerful, and open source. It's come a long way in just 3 months thanks to the contributions of Abimanyu Raja, Amanda Wixted, Mike Lundy, David Reid, Christopher Lobay, Hunter Gillane, Nakamatsu Shinji, and everybody that's given user feedback so far.</p>
+
+          </article>
+          <a href="/blog/2010/01/26/notifyio-brings-notifications-to-the-web/#disqus_thread">Comments</a>
+          <br /><br />
+        </div>
+
+        <div class="col-lg-3" id="sidebar">
+    <img src="https://dl.dropboxusercontent.com/u/2096290/Blog/progrium2016.png" id="photo" title="Jeff Lindsay" />
+    <p>
+        Jeff Lindsay is a design-minded software programmer living in Austin, Texas. 
+    </p>
+    <p>
+        He founded <a href="http://gliderlabs.com">Glider Labs</a>, an open source innovation lab.
+        There he writes <a href="http://gliderlabs.com/projects">open source developer infrastructure</a> 
+        to make the world more programmable.
+    </p>
+    <p><a href="/wiki/InfluenceAndAffiliations/">Learn more about Jeff.</a></p>
+    <h5>
+      <a rel="me" href="https://twitter.com/progrium"><i class="fa fa-twitter-square fa-2x"></i></a>
+      <a rel="me" href="https://github.com/progrium"><i class="fa fa-github fa-2x"></i></a>
+      <a ref="me" href="https://instagram.com/progrium"><i class="fa fa-instagram fa-2x"></i></a>
+      <a ref="me" href="https://vimeo.com/progrium"><i class="fa fa-vimeo-square fa-2x"></i></a>
+    </h5>
+</div>
+
+    </div>
+</div>
+</section>
+
+<section class="subscribe" style="padding: 20px 0;">
+  <div class="row">
+  <div class="col-lg-8 col-lg-offset-1">
+    <i class="fa fa-envelope"></i>
+    <a href="http://eepurl.com/bUo8Rb">Subscribe</a> to get future blog posts sent to you via email.
+  </div>
+  </div>
+</section>
+
+
+<section  class="alternate">
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-1">
+          <article>
+            <div class="meta">
+                <div class="date">
+                    <span class="month">Dec</span>
+                    <span class="day">08</span>
+                    <span class="year">2009</span>
+                </div>
+            </div>
+            <h1><a href="/blog/2009/12/08/hacker-dojo-place-of-the-way-of-the-hacker/">Hacker Dojo: place of the way of the hacker</a></h1>
+            <p>Two weeks ago it was being taped for a story on Fox News. One month ago it received a congratulatory visit from the mayor of Mountain View. Two months ago it was featured on <a href="http://www.flickr.com/photos/progrium/4017351989/">the front page</a> of the Mercury News. And four months ago was when we signed the lease for it. Hacker Dojo is officially on its way to something big.</p>
+
+<p><a href="http://hackerdojo.com">Hacker Dojo</a>, aspiring to be a global hub of innovation, is based on a simple idea: to provide a community center for hackers, thinkers and technologists to meet, discuss, learn and create.</p>
+
+<p>It's a non-profit, volunteer-run, member-supported operation that simply provides a space for hackers to do their thing 24/7, whether it's working on side projects, organizing a meetup, building the next startup, giving a class, working remotely, or just hanging out with diverse yet like-minded people. The thing they have in common is the hacker spirit, a force that drives ordinary but curious people to create what can end up being extraordinary, such as the personal computer, the first video game system, or the technology powering the Internet.</p>
+
+<p>A dojo is considered a place to do and train one's craft with others. It's most commonly used in the context of martial arts or other physical training. But the word "dojo" is simply defined as "place of the way." In the case of Hacker Dojo, that way is the way of the hacker.</p>
+
+<p>The hacker is not what most people think. Although 99% of the 100+ members of Hacker Dojo are capable of doing the things most people think "hackers" do, I'm 100% positive none of us have the intention of doing those things maliciously if at all. In fact, security has almost nothing to do with the way of the hacker. We define a hacker something like this:</p>
+
+<blockquote>
+  <p>A hacker is expert in their field, whether hobby or professional, that pushes the envelope of what's possible through hands-on exploration, driven by relentless curiosity and a desire to challenge the status quo.</p>
+</blockquote>
+
+<p>Steven Levy, author of <a href="http://www.amazon.com/Hackers-Computer-Revolution-Steven-Levy/dp/0141000511">Hackers: Heroes of the Computer Revolution</a>, describes computer hackers as people that "regard computing as the most important thing in the world." It's about passion. It's about something most of us can't even describe. It inexplicably compels us to explore technology. To build things. To learn things. To be like the heroes in our field and achieve the remarkable, which is something I think everybody can relate to.</p>
+
+<p>In fact, there is no reason why anybody shouldn't aspire to be like a hacker, an innovator. This is what Hacker Dojo is about. We want to foster hacker culture so it can grow, develop and spread. We want to make its values explicit, and be the "place of the way" of the hacker.</p>
+
+<p>If you still don't understand the hacker, or want to learn more, take a look at the <a href="http://en.wikipedia.org/wiki/Hacker_ethic">Hacker ethic article</a> on Wikipedia. There's also an excellent, short documentary available to watch online that shows you the energy and excitement of true hackers called <a href="http://www.youtube.com/view_play_list?p=906FF3F2339D0C70">Hackers: Wizards of the Electronic Age</a>.</p>
+
+<p>If you want to get involved in Hacker Dojo, come stop by or <a href="http://hackerdojo.com/">visit the website</a>! We hold many events at the Dojo, but it's also generally open for anybody to come and hack. If you're too far to come to us, you may find another <a href="http://en.wikipedia.org/wiki/Hackerspace">hackerspace</a> nearby. For example, in SF there is the excellent <a href="https://www.noisebridge.net/wiki/Noisebridge">Noisebridge</a> hackerspace.</p>
+
+<p>When you're this obsessed with technology, so much that most "normal" people have no idea what you're talking about, it helps to have a place where people don't think you're crazy. People have moved to Mountain View to be closer to Hacker Dojo. If you already live nearby, you should definitely take advantage of this place of the way of the hacker.</p>
+
+          </article>
+          <a href="/blog/2009/12/08/hacker-dojo-place-of-the-way-of-the-hacker/#disqus_thread">Comments</a>
+        </div>
+    </div>
+</div>
+</section>
+<section >
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-1">
+          <article>
+            <div class="meta">
+                <div class="date">
+                    <span class="month">Nov</span>
+                    <span class="day">05</span>
+                    <span class="year">2009</span>
+                </div>
+            </div>
+            <h1><a href="/blog/2009/11/05/why-efficiency-is-not-as-important-as-you-think/">Why efficiency is not as important as you think</a></h1>
+            <blockquote>
+  <p>"Efficiency is doing things right; effectiveness is doing the right things." -Peter Drucker</p>
+</blockquote>
+
+<p>When people, usually analytical people, want to improve a situation, they tend to optimize efficiency: achieve maximum output for input. "Let's reduce waste! Let's simplify! Let's make things smoother! Let's try and get more out of the system!" I suppose the obsession with efficiency is explained in the Drucker quote: that efficiency is "doing things right." Who wouldn't want to do things right?</p>
+
+<p>The problem with efficiency is that it has nothing to do with whether or not what you are currently doing is the right thing to do. Whereas effectiveness is about achieving the right result, or being on the right path.</p>
+
+<p>Too many people assume a system is on the right path. If there is a problem, they address it by smoothing things out and making the process more efficient without questioning the larger system they were produced in. But if the system is going in the wrong direction, that's only going to make the real problem worse. The push for more standardized testing in public education comes to mind.</p>
+
+<p>What's really important is effectiveness. In the end, it doesn't matter if your business is spending the least amount possible or your computer program running as fast as possible or your lifestyle entirely streamlined. If it's effective, it achieves the desired goal. Your business is producing value, your program is functionally useful, your lifestyle is making you happy. Effectiveness is qualitative. Efficiency is quantitative, which is why I think it's so big with analytical people. Probably intelligent people in general.</p>
+
+<p>If you think about it, intelligence, especially knowledge, is mostly concerned with efficiency. It's more about how to solve problems, less so with what problems to solve. Knowledge is a tool. It's neutral. To what ends do you actually use it for? That requires values and intention—the realm of wisdom. A wise person tends to be an effective person.</p>
+
+<p>When approaching a problem, wisdom and pragmatism must frame intelligence. Before you start thinking about efficiency, you should step back and think about effectiveness. In computer engineering this idea spread with Donald Knuth's quote "premature optimization is the root of all evil." His argument being that 97% of efficiency optimizations are unnecessary to achieve functionality, at which point you can determine which optimizations will be the most effective improvements of efficiency.</p>
+
+<p>In a way, it's a look before you leap argument. Don't get me wrong with all this. Efficiency is terribly valuable and can improve a situation, but only if you're on the right path. Just because a system is currently working or was previously working doesn't mean it should be, or will in the future. You should always consider effectiveness before efficiency, even in "working" systems. Here's why:</p>
+
+<p>Effectiveness opens the door for efficiency, but efficiency can change the requirements for effectiveness.</p>
+
+<p>Quantitative improvements can qualitatively change the situation if taken far enough. The game can change. For example, you can become so efficient at producing cars that production isn't the problem anymore. Then it's a question of variety, like choice of color. "You can have any color as long as that color is black," Ford said, and soon after lost the lead in car manufacturing. Perhaps when business slowed, they tried to make their sales and marketing or administrative organization more efficient. They didn't re-asses whether the thing they were doing so right (building cars so efficiently)… was the right thing. The effective thing.</p>
+
+<p>Efficiency is important, but powerless without effectiveness. Always keep an eye on effectiveness.</p>
+
+          </article>
+          <a href="/blog/2009/11/05/why-efficiency-is-not-as-important-as-you-think/#disqus_thread">Comments</a>
+        </div>
+    </div>
+</div>
+</section>
+
+
+<section class="alternate">
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+        <ul class="pager article">
+          <li class="previous">
+            <a href="/blog/page11/">&larr; Older</a>
+          </li>
+
+          <li class="next">
+            <a href="/blog/page9/">Newer &rarr;</a>
+          </li>
+        </ul>
+        </div>
+    </div>
+</div>
+</section>
+
+</main>
+
+
+
+    <footer>
+      <div class="container clearfix">
+        &copy; 2017 Jeff Lindsay
+      </div>
+    </footer>
+
+  </div>
+  <script src="/javascripts/all.js"></script>
+  <script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+        <script type="text/javascript">
+        try {
+        var pageTracker = _gat._getTracker("UA-6824126-1");
+        pageTracker._trackPageview();
+        } catch(err) {}</script>
+    <!--script type="text/javascript">
+      var host = "progrium.com";
+      if ((host == window.location.host) && (window.location.protocol != "https:"))
+        window.location.protocol = "https";
+    </script-->
+    <script type="text/javascript">
+      
+    </script>
+  </body>
+</html>

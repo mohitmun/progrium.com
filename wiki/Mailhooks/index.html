@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title> Mailhooks :: Jeff Lindsay, Open source hacker</title>
+    <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/blog/atom.xml" />
+    <link rel="shortcut icon" type="image/x-icon" href="/images/JeffLindsayDeluxe.png" />
+    <link href='https://fonts.googleapis.com/css?family=Dosis:400,300,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700|Lora:400,700,400italic|Vollkorn:400,700' rel='stylesheet' type='text/css'>
+    <link href="/stylesheets/all.css" rel="stylesheet" />
+    
+  </head>
+  <body>
+  <div id="wrapper">
+
+    <header>
+  <div class="container">
+  <div class="row">
+      <div class="col-lg-8 col-lg-offset-1">
+        You're reading the <a href="/wiki">wiki</a> of Jeff Lindsay (<a href="http://twitter.com/progrium">@progrium</a>). There is also his <a href="/blog">blog</a>.
+      </div>
+  </div>
+</div>
+</header>
+
+<main id="main" role="main">
+<section>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-1">
+          <div style="float: right; font-size: smaller;">
+            <a target="_blank" href="http://prose.io/#progrium/progrium.com/edit/master/source/wiki/Mailhooks.html.markdown">Edit</a> |
+            <a href="https://github.com/progrium/progrium.com/commits/master/source/wiki/Mailhooks.html.markdown">History</a>
+          </div>
+          <article>
+            <h1 id="mailhooks">Mailhooks</h1>
+
+<p>Mailhook, later renamed Mailhooks, was a single-purpose web app I made in 2006. It was the first in a series of applications with similar names like Clickhooks and Jabberhooks to both demonstrate webhooks and, in most cases, to make it easier to handle some particular protocol. In the case of Mailhooks, it accepted incoming email, parsed it, then sent it to a URL as a form post. A webhook for incoming email.</p>
+
+<p>Besides being the first of my webhook demo apps, it was significant for a few other reasons despite being so trivial. First, I believe it was my first Twisted Python app, therefore the first time I did evented server programming. And the others I can share with two stories: the origin story, and, oh, let's call it the downfall story.</p>
+
+<h2 id="origin-story">Origin Story</h2>
+
+<p>Like a number of my projects, I wrote Mailhooks several times. The first time, and the final time. Sometimes these are years apart, so I can't remember when exactly this story took place. It might have been the original inspiration or it might have been what prompted the rewrite. Regardless, it communicates some of the motivation behind a lot of my work.</p>
+
+<p>Back then I lived in the south bay, which is where I grew up. I was spending a lot of time with friends that I met at a LAN party called LGLAN. They later helped found and organize SuperHappyDevHouse. One of our non-tech activities was hiking, though most of the time we'd be talking about tech. During one of these hikes, we idealized a scenario that would only really be possible with Mailhooks.</p>
+
+<p>At the time, a few of us had the <a href="https://en.wikipedia.org/wiki/Danger_Hiptop">Danger Hiptop</a> phone, marketed by T-Mobile as the Sidekick. It was a smart phone ahead of its time, pre-iPhone, with a large display, builtin camera, and a qwerty keyboard. It also had an open app store and developer ecosystem. One of the apps you could buy was an SSH client. We also used the camera quite a bit. The easiest way to get the photos to your laptop was via email, which is still often true today. Or we'd email directly to Flickr using their email upload address.</p>
+
+<p>This inspired a number of ideas that came up during this hike. One idea was an email service that would take a bunch of photo attachments, stitch them together into an animated GIF and email it back to you. Then we thought it would be cool if we were able to make this right there while hiking. It was theoretically possible, we had SSH clients with us, so we could SSH into a server and write some PHP that shelled out to ImageMagick to make the GIF from the images. The hard part was getting the images, ideally via email.</p>
+
+<p>If Mailhooks existed, we'd have everything to literally build this on our phones while hiking, circa 2005. It would probably have taken only a few minutes. Looking back, we could have configured Postfix for this via SSH, but that archaic system is not an easy one to work with. Mailhooks originally relied on Postfix and it was not something a kid with my experience then could easily throw together. The point being, once I had Mailhooks, these email ideas <em>were</em> easy to throw together.</p>
+
+<p>I'm quite certain the moment I got home I started working on Mailhooks. I even built a prototype of that email attachement to GIF service idea with it.</p>
+
+<p>I like this story because it paints a picture of how we thought the world should be, and how I still think it should be 10 years later. It <em>should</em> have been that easy to wire together, <em>on our phones, while hiking</em>. And not just for veteran programmers, but in particular it should be easy for excited kids that know basic web programming and have a cool idea.</p>
+
+<p>Just the other day on Facebook, I noticed my friend <a href="http://tantek.com/">Tantek</a>, a veteran programmer, bemoaning how difficult it would be to add an email interface to a project of his. Apparently difficult enough that it wasn't worth it. Still, today.</p>
+
+<p>That said, <a href="https://sendgrid.com/">SendGrid</a> does have exactly what Mailhooks is <a href="https://sendgrid.com/docs/API_Reference/Webhooks/parse.html">as a feature now</a>. And a few people have linked me to recent projects that do the same thing. In one case it was framed as "to make email bots". Yes, and plenty more. There is a demand for this, though I would posit not enough to start a company for.</p>
+
+<h2 id="downfall-story">Downfall Story</h2>
+
+<p>Actually this story is the downfall of version one, but both versions had a similar fate. The second implementation happened in 2009 and was on App Engine. It used their recently added incoming email interface, which was, not surprisingly to me, based on HTTP like a webhook. At that point it became a convenience around App Engine's email hook. From then on, any app I wanted to make with email I just made directly using App Engine. This is why I never really talked about it except for in talks as an example story around webhooks.</p>
+
+<p>The downfall story I want to tell is how a friend and I attempted to make a small business around Mailhooks (then mailhook.org). It's actually pretty short, but is an experience that helped shape my desire for a vehicle <a href="http://progrium.com/wiki/BeyondStartups/">other than business</a> to run a web app.</p>
+
+<p>I was working as a contractor at the time and it give me enough freedom (and energy, but also I was younger) to explore projects like Mailhooks. While the initial version was running and people were starting to use it, I started talking to a lot of them. After a few expressed how much they'd pay for a commercially supported version, I starting asking others how much they'd pay for it. The answers were all over the place. Some, as I suspected, said it was not worth paying for. Others were saying upwards of $20 a month.</p>
+
+<p>That made it seem like there was potential, so I talked a friend into partnering with me to make it something people could pay for. This involved making it more user friendly, having a landing page, and setting up payments, which was not quite as trivial as it is today with Stripe. The entire time I was very skeptical it was worth even this bit of work.</p>
+
+<p>The way this ended, if I recall, was rather anti-climactic. The guy I was working with sort of disappeared. That killed any motivation to keep trying and I let mailhook bitrot until I remade it in 2009. Similarly, I let that bitrot, though it did run for years on App Engine with no maintenance.</p>
+
+<p>That said, I will say this perhaps isn't the end of the entire Mailhooks story. I've learned a lot since then and have a much more cohesive vision for a lot of the ideas from that era.</p>
+
+          </article>
+        </div>
+
+
+    </div>
+</div>
+</section>
+</main>
+
+
+
+    <footer>
+      <div class="container clearfix">
+        &copy; 2017 Jeff Lindsay
+      </div>
+    </footer>
+
+  </div>
+  <script src="/javascripts/all.js"></script>
+  <script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+        <script type="text/javascript">
+        try {
+        var pageTracker = _gat._getTracker("UA-6824126-1");
+        pageTracker._trackPageview();
+        } catch(err) {}</script>
+    <!--script type="text/javascript">
+      var host = "progrium.com";
+      if ((host == window.location.host) && (window.location.protocol != "https:"))
+        window.location.protocol = "https";
+    </script-->
+    <script type="text/javascript">
+      
+    </script>
+  </body>
+</html>

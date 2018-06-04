@@ -1,0 +1,420 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Jeff Lindsay, Open source hacker</title>
+    <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/blog/atom.xml" />
+    <link rel="shortcut icon" type="image/x-icon" href="/images/JeffLindsayDeluxe.png" />
+    <link href='https://fonts.googleapis.com/css?family=Dosis:400,300,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700|Lora:400,700,400italic|Vollkorn:400,700' rel='stylesheet' type='text/css'>
+    <link href="/stylesheets/all.css" rel="stylesheet" />
+    
+  </head>
+  <body>
+  <div id="wrapper">
+
+    <header>
+  <div class="container">
+  <div class="row">
+      <div class="col-lg-8 col-lg-offset-1">
+        You're reading the <a href="/blog">blog</a> of Jeff Lindsay (<a href="http://twitter.com/progrium">@progrium</a>). There is also his <a href="/wiki">wiki</a>.
+      </div>
+  </div>
+</div>
+</header>
+
+<main id="main" role="main">
+  <section>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-1">
+          <article>
+            <div class="meta">
+                <div class="date">
+                    <span class="month">Sep</span>
+                    <span class="day">10</span>
+                    <span class="year">2014</span>
+                </div>
+            </div>
+            <h1><a href="/blog/2014/09/10/automatic-docker-service-announcement-with-registrator/">Automatic Docker Service Announcement with Registrator</a></h1>
+            <p>No matter which service discovery system you use, it will not likely know how to register your services for you. Service discovery requires your services to somehow announce themselves to the service directory. This is not as trivial as it sounds. There are many approaches to do this, each with their own pros and cons.</p>
+
+<p>In an ideal world, you wouldn't have to do anything special. With Docker, we can actually arrange this with a component I've made called <a href="https://github.com/progrium/registrator">Registrator</a>.</p>
+
+<p>Before I get to Registrator, let's understand what it means to register a service and see what kind of approaches are out there for registering or announcing services. It might also be a good idea to see my last posts <a href="http://progrium.com/blog/2014/08/20/consul-service-discovery-with-docker/">on Consul</a> and <a href="http://progrium.com/blog/2014/07/29/understanding-modern-service-discovery-with-docker/">on service discovery</a> in general.</p>
+
+<h2 id="service-registration-data-model">Service Registration Data Model</h2>
+
+<p>Service registration involves a few different pieces of information that describes a service. At the very least, it will involve a service name, such as "web", and a locating IP and port. Often, there is a unique ID for a service instance ("web.2"). Some systems generate this automatically.</p>
+
+<p>Around this, there might be extra information or metadata associated with a service. In some systems this could be key-value attributes. Or maybe just tags. Classic service discovery of the zero-configuration world would also include the protocol (HTTP, SMTP, Jabber, etc), but this isn't very useful information since in our case we already know the protocol of the service we're looking for.</p>
+
+<p>When using etcd or Zookeeper it's up to you how your service directory works, both what information is stored and how to structure it. Specialized service discovery systems like Flynn's discoverd or Netflix's Eureka provide more structure around service semantics. Consul is sort of a hybrid, since it's really a specialized service discovery system built-in to a general configuration store.</p>
+
+<p>Consul lets you define a service name, IP, port, optional service ID, and optional tags. In a future release, I believe it will tie in more with the key-value store to allow you to have arbitrary attributes associated with a service. Right now, Consul also lets you define a health check to use with its monitoring system, which is unique to Consul.</p>
+
+<p>So far, that gives you an idea of the data involved in registering a single service, but that's not the complete model. A service "record" is a reference to an actual service, and it's important to understand what that actually is. Whether using containers or not, a service will always boil down to a long-running process, and a process may listen on several ports. This could imply multiple services.</p>
+
+<p>One could argue that if a process listens on multiple ports for the same functional service, it might be a good idea to collapse it into a single service. Modeling it in this way ends up being either complicated (putting the other service ports in meta-data), or incomplete ("which port do I use for TLS?"). I've found it's simplest to just model each port a process listens on as a separate service, using the name to logically group them. For example, "webapp-http" and "webapp-https".</p>
+
+<h2 id="registering-in-process-or-using-a-coprocess">Registering In-process or Using a Coprocess</h2>
+
+<p>The most common strategy to register in service discovery is actually directly self-registering from the service process itself. From a "good solution" perspective, this might seem terrible. But it's common for a reason. Mostly, it's pragmatic, as many organizations build their specific services around their specific service discovery system. However, it does have other advantages.</p>
+
+<p>Service discovery systems like Eureka and discoverd provide a library that can be used in your service to register itself, as well as lookup and discover other services from in-process. This provides opportunities like having balancing and connection pooling logic taken care of for you, without the extra hop of a reverse proxy. And in cases where heartbeats are used for liveness, the library can handle heartbeating for you.</p>
+
+<p>The disadvantage of this approach as a reusable system is that libraries are hard provide across languages, so there might be limited language support for the library. Depending on how complex the library is, it may also be difficult to port for people that want to make the effort to expand language support.</p>
+
+<p>Though, the biggest disadvantage is putting the responsibility on the service in the first place. This creates two problems. First, if you intend to make your services useful to anybody else, your service will be less portable across environments that use different discovery mechanisms. Netflix open source projects suffer from this, as people already complain it's too hard to use some of their components without using all of them. Second, third-party components and services like Nginx, Memcached, or pretty much any datastore will not register themselves.</p>
+
+<p>While some software might provide hooks or extensions to integrate with your service discovery, this is pretty rare. And patching is not a scalable solution. Instead, the common solution for third-party services is to put the registering responsibility <em>near</em> the service.</p>
+
+<p>If you're not directly registering in-process, the second most common approach is running another parallel process to register the service. This works best with a process manager like systemd that can ensure if the service starts, so does the paired registering service.</p>
+
+<p>Some call this technique using a coprocess or a "sidekick". When working with containers, I usually use coprocess in reference to another process in the same container. A sidekick would be a separate container and process. Either way, this is a useful pattern even beyond service registration. I use it for other administrative services that support the main service, for example to re-configure the service. The open source PaaS Deis used this pattern for shipping out a service's logs. However, it seems to simplify they're <a href="https://github.com/deis/deis/issues/1714">moving to my tool logspout</a>.</p>
+
+<p>A variation of using a coprocess is process "wrapping", where you use a launcher process that will register and run the service as a child process. Flynn does this with sdutil. Some might say it can make starting services feel very complicated since you now have to configure the service as usual, on top of providing registration details to the launcher. At the end of the day, this is effectively the coprocess model launched with one command instead of two.</p>
+
+<h2 id="the-problem-with-a-coprocess-for-registering">The Problem with a Coprocess for Registering</h2>
+
+<p>In whatever form it comes, a coprocess comes with two challenges: configuration and manageability.</p>
+
+<p>With a parallel announcing process, you need to tell it what service or services it should announce, providing it all the information we talked about before. An interesting problem with any external registration solution is where that service description is stored. For example, if you were doing announcement in-process, it would at least already know what ports it exposes. However, it most likely wouldn't know what the operator wants to call it. Some systems will roll all this information up into higher-level system constructs, like "service groups" or some unit of orchestration. I prefer not to couple service discovery with orchestration. Instead, I'd rather service semantics live as close to the service process as possible.</p>
+
+<p>A coprocess or sidekick for registering also means you'll have one for every service you start. There is no technical problem with this, but it introduces operational complexity. A system has to manage this, whether it's a process manager like systemd or full-on orchestration. That system likely has to be configured, adding more configuration, which may or may not be the right place to define the service. And now you need to be sure to always use this system to launch any service, since running a service by hand will not register the service.</p>
+
+<p>In an ideal world, we don't worry about any of this. We just run a service and its ports somehow get registered as services. If we want to specify more details about the service, we can do this in a way that's packaged as close to the service as possible. And of course, we want an operator and automation friendly way to set or override that service definition at runtime.</p>
+
+<h2 id="how-docker-helps-achieve-the-ideal">How Docker Helps Achieve the Ideal</h2>
+
+<p>Running services in Docker provides a number of benefits, and those who believe Docker is just about container isolation clearly miss the point. Docker defines a standard unit of software that can have anything in it and yet have a standard interface of operations. This interface works with a runtime that gives you certain capabilities in managing and operating that unit of software. These capabilities and this common container model happen to have everything we need to automatically register services for any software.</p>
+
+<p>The Docker container image includes default environment variables, which can be defined by the Dockerfile. This turns out to be the perfect place to describe the service it contains. The container author has the option to use the environment variables to include their idea of how the service should be described and registered, which will be shipped with the container wherever it goes. The operator can then set runtime environment variables to further define or redefine their own description of the service.</p>
+
+<p>The Docker runtime makes these values easy to inspect programmatically. The runtime also produces events when a container starts or stops, which is generally when you want to register or deregister the services of the container.</p>
+
+<p>All this together lets us provide automatic service registration for any Docker container using a little appliance I've made called Registrator.</p>
+
+<h2 id="introducing-registrator">Introducing Registrator</h2>
+
+<p>Registrator is a single, host-level service you run as a Docker container. It watches for new containers, inspects them for service information, and registers them with a service registry. It also deregisters them when the container dies. It has a pluggable registry system, meaning it can work with a number of service discovery systems. Currently it supports Consul and etcd.</p>
+
+<p>There are a few neat properties of Registrator:</p>
+
+<p>First, it's automatic. You don't have to do anything special other than have Registrator running and attached to a service registry. Any public port published is registered as a service.</p>
+
+<p>Related but fairly significant, it requires no cooperation from inside the container to register services. If no service description is included and the operator doesn't specify any at runtime, it uses Docker container introspection for good defaults.</p>
+
+<p>Next, it uses environment variables as generic metadata to define the services. Some people have asked how you can add metadata to Docker containers, but the answer is right in front of them. As mentioned this comes with the benefit of being able to define them during container authorship, as well as at runtime.</p>
+
+<p>Lastly, the metadata Registrator uses could become a common interface for automatic service registration beyond Registrator and even beyond Docker. Environment variables are a portable metadata system and Registrator defines a very data-driven way to define services. That same data could be used by any other system.</p>
+
+<p>In terms of previous work, Michael Crosby's project <a href="https://github.com/crosbymichael/skydock">Skydock</a> was a big inspiration on the direction of Registrator, so it might be worth looking into for reference. Registrator is a little more generic and made specifically for distributed systems, not as much for single host registries. For example, Registrator focuses on published ports and uses a host-level IP as opposed to local container IPs. For people interested in single-host discovery, Registrator has already inspired compatible alternatives, including Brian Lalor's <a href="https://github.com/blalor/docker-hosts">docker-hosts</a>.</p>
+
+<p>In any case, I believe I've made the first general purpose solution to automatic service registration. Here's a video demo:</p>
+
+<p style="text-align: center;"><iframe src="//player.vimeo.com/video/105806672" width="640" height="360" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe></p>
+
+<h2 id="onward">Onward…</h2>
+
+<p>In retrospect, the problem we've solved here now seems very trivial, but we've never had this before. Like many good designs, it can take a while for all the pieces to come together and make sense in one's mind before it becomes obvious. Once it's obvious, it seems like it always was.</p>
+
+<p>Combining auto-registration with a good service directory, you're almost to an ideal service discovery system. That last problem is about the other side of discovery: connecting to registered services. The next post will describe how this is also not as trivial as it sounds, and as usual, I will offer an open source solution.</p>
+
+          </article>
+          <a href="/blog/2014/09/10/automatic-docker-service-announcement-with-registrator/#disqus_thread">Comments</a>
+          <br /><br />
+        </div>
+
+        <div class="col-lg-3" id="sidebar">
+    <img src="https://dl.dropboxusercontent.com/u/2096290/Blog/progrium2016.png" id="photo" title="Jeff Lindsay" />
+    <p>
+        Jeff Lindsay is a design-minded software programmer living in Austin, Texas. 
+    </p>
+    <p>
+        He founded <a href="http://gliderlabs.com">Glider Labs</a>, an open source innovation lab.
+        There he writes <a href="http://gliderlabs.com/projects">open source developer infrastructure</a> 
+        to make the world more programmable.
+    </p>
+    <p><a href="/wiki/InfluenceAndAffiliations/">Learn more about Jeff.</a></p>
+    <h5>
+      <a rel="me" href="https://twitter.com/progrium"><i class="fa fa-twitter-square fa-2x"></i></a>
+      <a rel="me" href="https://github.com/progrium"><i class="fa fa-github fa-2x"></i></a>
+      <a ref="me" href="https://instagram.com/progrium"><i class="fa fa-instagram fa-2x"></i></a>
+      <a ref="me" href="https://vimeo.com/progrium"><i class="fa fa-vimeo-square fa-2x"></i></a>
+    </h5>
+</div>
+
+    </div>
+</div>
+</section>
+
+<section class="subscribe" style="padding: 20px 0;">
+  <div class="row">
+  <div class="col-lg-8 col-lg-offset-1">
+    <i class="fa fa-envelope"></i>
+    <a href="http://eepurl.com/bUo8Rb">Subscribe</a> to get future blog posts sent to you via email.
+  </div>
+  </div>
+</section>
+
+
+<section  class="alternate">
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-1">
+          <article>
+            <div class="meta">
+                <div class="date">
+                    <span class="month">Aug</span>
+                    <span class="day">20</span>
+                    <span class="year">2014</span>
+                </div>
+            </div>
+            <h1><a href="/blog/2014/08/20/consul-service-discovery-with-docker/">Consul Service Discovery with Docker</a></h1>
+            <p><a href="http://www.consul.io/">Consul</a> is a powerful tool for building distributed systems. There are a handful of alternatives in this space, but Consul is the only one that really tries to provide a comprehensive solution for service discovery. As my <a href="/blog/2014/07/29/understanding-modern-service-discovery-with-docker/">last post</a> points out, service discovery is a little more than what Consul can provide us, but it is probably the biggest piece of the puzzle.</p>
+
+<h2 id="understanding-consul-and-the-config-store">Understanding Consul and the "Config Store"</h2>
+
+<p>The heart of Consul is a particular class of distributed datastore with properties that make it ideal for cluster configuration and coordination. Some call them lock servers, but I call them "config stores" since it more accurately reflects their key-value abstraction and common use for shared configuration.</p>
+
+<p>The father of config stores is Google's Chubby, which was never made publicly available but is described in the influential <a href="http://research.google.com/archive/chubby.html">Chubby paper</a>. In the open source world we have Apache Zookeeper, the mostly defunct doozerd, and in the last year, etcd and Consul.</p>
+
+<p>These specialized datastores are defined by their use of a consensus algorithm requiring a quorum for writes and generally exposing a simple key-value store. This key-value store is highly available, fault-tolerant, and maintains strong consistency guarantees. This can be contrasted with a number of alternative clustering approaches like master-slave or two-phase commit, all with their own benefits, drawbacks, and nuances.</p>
+
+<p>You can learn more about the challenges of designing stateful distributed systems with the online book, <a href="http://book.mixu.net/distsys/single-page.html">Distributed systems for fun and profit</a>. This image from the book summarizes where the quorum approach stands compared to others:</p>
+
+<p style="text-align: center;"><img src="/images/content/embassy/google-transact09.png" title="Diagram borrowed with love from Distributed systems for fun and profit" /></p>
+
+<p>Quorum datastores such as our config stores seem to have many ideal properties <em>except</em> for performance. As a result, they're generally used as low-throughput coordinators for the rest of the system. You don't use them as your application database, but you might use them to coordinate replacing a failed database master.</p>
+
+<p>Another common property of config stores is they all have mechanisms to watch for key-value changes in real-time. This feature is central in enabling use-cases such as electing masters, resource locking, and service presence.</p>
+
+<h2 id="along-comes-consul">Along comes Consul</h2>
+
+<p>Since Zookeeper came out, the subsequent config stores have been trying to simplify. Both in terms of user interface, ease of operation, and implementation of the consensus algorithms. However, they're all based on this very expressive, but lowest common denominator abstraction of a key-value store.</p>
+
+<p>Consul is the first to build on top of this abstraction by also providing specific APIs around the semantics of common config store functions, namely service discovery and locking. It also does it in a way that's very thoughtful about those particular domains.</p>
+
+<p>For example, a directory of services without service health is actually not a very useful one. This is why Consul also provides monitoring capabilities. Consul monitoring is comparable, and even compatible, with Nagios health checks. What's more, Consul's agent model makes it more scalable than centralized monitoring systems like Nagios.</p>
+
+<p style="text-align: center;"><img src="/images/content/embassy/consul_layers.png" /></p>
+
+<p>A good way to think of Consul is broken into 3 layers. The middle layer is the actual config store, which is not that different from etcd or Zookeeper. The layers above and below are pretty unique to Consul.</p>
+
+<p>Before Consul, HashiCorp developed a host node coordinator called Serf. It uses an efficient gossip protocol to connect a set of hosts into a cluster. The cluster is aware of its members and shares an event bus. This is primarily used to know when hosts come and go from the cluster, such as during a host failure. But in Serf the event bus was also exposed for custom events to trigger user actions on the hosts.</p>
+
+<p>Consul leverages Serf as a foundational layer to help maintain its cluster. For the most part, it's more of an implementation detail. However, I believe in an upcoming version of Consul, the Serf event bus will also be exposed in the Consul API.</p>
+
+<p>The key-value store in Consul is very similar to etcd. It shares the same semantics and basic HTTP API, but differs in subtle ways. For example, the API for reading values lets you optionally pick a consistency mode. This is great not just because it gives users a choice, but it documents the realities of different consistency levels. This transparency educates the user about the nuances of Consul's replication model.</p>
+
+<p>On top of the key-value store are some other great features and APIs, including locks and leader election, which are pretty standard for what people originally called lock servers. Consul is also datacenter aware, so if you're running multiple clusters, it will let you federate clusters. Nothing complicated, but it's great to have built-in since spanning multiple datacenters is very common today.</p>
+
+<p>However, the killer feature of Consul is its service catalog. Instead of using the key-value store to arbitrarily model your service directory as you would with etcd or Zookeeper, Consul exposes a specific API for managing services. Explicitly modeling services allows it to provide more value in two main ways: monitoring and DNS.</p>
+
+<h2 id="built-in-monitoring-system">Built-in Monitoring System</h2>
+
+<p>Monitoring is normally discussed independent of service discovery, but it turns out to be highly related. Over the years, we've gotten better at understanding the importance of monitoring service health in relation to service discovery.</p>
+
+<p>With Zookeeper, a common pattern for service presence, or liveness, was to have the service register an "ephemeral node" value announcing its address. As an ephemeral node, the value would exist as long as the service's TCP session with Zookeeper remained active. This seemed like a rather elegant solution to service presence. If the service died, the connection would be lost and the service listing would be dropped.</p>
+
+<p>In the development of doozerd, the authors avoided this functionality, both for the sake of simplicity and that they believed it encouraged bad practice. The problem with relying on a TCP connection for service health is that it doesn't exactly mean the service is healthy. For example, if the TCP connection was going through a transparent proxy that accidentally kept the connection alive, the service could die and the ephemeral node may continue to exist.</p>
+
+<p>Instead, they implemented values with an optional TTL. This allowed for the pattern of actively updating the value if the service was healthy. TTL semantics are also used in etcd, allowing the same active heartbeat pattern. Consul supports TTL as well, but primarily focuses on more robust liveness mechanisms. In the discovery layer I helped design for Flynn, our client library lets you register your service and it will automatically heartbeat for you behind the scenes.</p>
+
+<p>This is generally effective for service presence, but it might not take the lesson to heart. Blake Mizerany, the co-author of doozerd and now maintainer of etcd, will stress the importance of <em>meaningful</em> liveness checks. In other words, there is no one-size-fits-all. Every service performs a different function and without testing that specific functionality, we don't actually know that it's working properly. Generic heartbeats can let us know if the process is running, but not that it's behaving correctly enough to safely accept connections.</p>
+
+<p>Specialized health checks are exactly what monitoring systems give us, and Consul gives us a distributed monitoring system. Then it lets us choose if we want to want to associate a check with a service, while also supporting the simpler TTL heartbeat model as an alternative. Either way, if a service is detected as not healthy, it's hidden from queries for active services.</p>
+
+<h2 id="built-in-dns-server">Built-in DNS Server</h2>
+
+<p>In my last post, I mentioned how DNS is not a sufficient technology for service discovery. I was very hesitant in accepting the value of a DNS interface to services in Consul. As I described before, all our environments are set up to use DNS for resolving names to IPs, not IPs with ports. So other than identifying the IPs of hosts in the cluster, the DNS interface at first glance seems to provide limited value, if any, for our concept of service discovery.</p>
+
+<p>However, it does serve SRV records for services, and this is huge. Built-in DNS resolvers in our environments don't lookup SRV records, however, the library support to do SRV lookups ourselves is about as ubiquitous as HTTP. This took me a while to realize. It means we all have a client, even more lightweight than HTTP, and it's made <em>specifically</em> for looking up a service.</p>
+
+<p>To me this makes SRV the best standard API for simple service discovery lookups. I hope more service discovery systems implement it.</p>
+
+<p>In a later post in this series, we build on SRV records from Consul DNS to generically solve service inter-connections in Docker clusters. I don't think I would have realized any of this if Consul didn't provide a built-in DNS server.</p>
+
+<h2 id="consul-and-the-ecosystem">Consul and the Ecosystem</h2>
+
+<p>Consul development is very active. In the past few months, they've had several significant releases, although it's still pre-1.0. Etcd is also actively being developed, though currently from the inside out, focusing on a re-design of their Raft implementation. The two projects are similar in many ways, but also very different. I hope they learn and influence each other, perhaps even share some code since they're both written in Go. At this point, though, Consul is ahead as a comprehensive service discovery primitive.</p>
+
+<p>Unfortunately, Consul is much less popular in the Docker world. Perhaps this is just due to less of a focus on containers at HashiCorp, which is contrasted by the heavily container-oriented mindset of the etcd maintainers at CoreOS.</p>
+
+<p>I've been trying hard to help bridge the Docker and Consul world by building a solid Consul container for Docker. I try to design containers to be self-contained, runtime-configurable appliances as much as possible. It was not hard to do this with Consul, which is now available on <a href="https://github.com/progrium/docker-consul">Github</a> or <a href="https://registry.hub.docker.com/u/progrium/consul/">Docker Hub</a>.</p>
+
+<h2 id="running-consul-in-docker">Running Consul in Docker</h2>
+
+<p>Running a Consul node in Docker for a production cluster can be a bit tricky. This is due to the amount of configuration that the container itself needs for Consul to work. For example, here's how you might start one node using Docker (one command over several lines for readability):</p>
+
+<pre class="highlight plaintext"><code>$ docker run --name consul -h $HOSTNAME  \
+    -p 10.0.1.1:8300:8300 \
+    -p 10.0.1.1:8301:8301 \
+    -p 10.0.1.1:8301:8301/udp \
+    -p 10.0.1.1:8302:8302 \
+    -p 10.0.1.1:8302:8302/udp \
+    -p 10.0.1.1:8400:8400 \
+    -p 10.0.1.1:8500:8500 \
+    -p 172.17.42.1:53:53/udp \
+    -d -v /mnt:/data \
+    progrium/consul -server -advertise 10.0.1.1 -join 10.0.1.2
+</code></pre>
+
+<p>The Consul container I built comes with a helper command letting you simply run:</p>
+
+<pre class="highlight plaintext"><code>$ $(docker run progrium/consul cmd:run 10.0.1.1::10.0.1.2 -d -v /mnt:/data)
+</code></pre>
+
+<p>This is just a special command to generate a full Docker run command like the first one, hence wrapping it in a subshell. It's not required, but a helpful convenience to hopefully get people started with Consul in Docker much quicker.</p>
+
+<p>One of the neat ways Consul and Docker can work together is by giving Consul as a DNS server to Docker. This transparently runs DNS resolution in containers through Consul. If you set this up at the Docker daemon level, you can also specify DNS search domains. That means the <code>.services.consul</code> can be dropped, allowing containers to resolve records with just the service name.</p>
+
+<p>The project README has some pretty helpful getting started instructions as well as more detail on all these features. Here's a quick video showing how easy it is to get a Consul cluster up and running inside Docker, including the above DNS trick.</p>
+
+<p style="text-align: center;"><iframe src="//player.vimeo.com/video/103943481" width="640" height="360" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe></p>
+
+<h2 id="onward">Onward…</h2>
+
+<p>Once you have Consul running in Docker, you're <em>close</em> to having great service discovery, but as I mentioned in my last post, you're still missing those second two legs. Stay tuned for the next post on automatically registering containerized services with Consul.</p>
+
+
+          </article>
+          <a href="/blog/2014/08/20/consul-service-discovery-with-docker/#disqus_thread">Comments</a>
+        </div>
+    </div>
+</div>
+</section>
+<section >
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-1">
+          <article>
+            <div class="meta">
+                <div class="date">
+                    <span class="month">Jul</span>
+                    <span class="day">29</span>
+                    <span class="year">2014</span>
+                </div>
+            </div>
+            <h1><a href="/blog/2014/07/29/understanding-modern-service-discovery-with-docker/">Understanding Modern Service Discovery with Docker</a></h1>
+            <p>Over the next few posts, I'm going to be exploring the concepts of service discovery in modern service-oriented architectures, specifically around Docker. Many people aren't familiar with service discovery, so I have to start from the beginning. In this post I'm going to be explaining the problem and providing some historical context around solutions so far in this domain.</p>
+
+<p>Ultimately, we're trying to get Docker containers to easily communicate across hosts. This is seen by some as one of the next big challenges in the Docker ecosystem. Some are waiting for <a href="https://en.wikipedia.org/wiki/Software-defined_networking">software-defined networking</a> (SDN) to come and save the day. I'm also excited by SDN, but I believe that well executed service discovery is the right answer today, and will continue to be useful in a world with cheap and easy software networking.</p>
+
+<h2 id="what-is-service-discovery">What is service discovery?</h2>
+
+<p>Service discovery tools manage how processes and services in a cluster can find and talk to one another. It involves a directory of services, registering services in that directory, and then being able to lookup and connect to services in that directory.</p>
+
+<p>At its core, service discovery is about knowing when any process in the cluster is listening on a TCP or UDP port, and being able to look up and connect to that port by name.</p>
+
+<p>Service discovery is a general idea, not specific to Docker, but is increasingly gaining mindshare in mainstream system architecture. Traditionally associated with <a href="https://en.wikipedia.org/wiki/Zero-configuration_networking">zero-configuration networking</a>, its more modern use can be summarized as facilitating connections to dynamic, sometimes ephemeral services.</p>
+
+<p>This is particularly relevant today not just because of service-oriented architecture and microservices, but our increasingly dynamic compute environments to support these architectures. Already dynamic VM-based platforms like EC2 are slowly giving way to even more dynamic higher-level compute frameworks like Mesos. Docker is only contributing to this trend.</p>
+
+<h2 id="name-resolution-and-dns">Name Resolution and DNS</h2>
+
+<p>You might think, "Looking up by name? Sounds like DNS." Yes, name resolution is a big part of service discovery, but DNS alone is insufficient for a number of reasons.</p>
+
+<p>A key reason is that DNS was originally not optimized for closed systems with real-time changes in name resolution. You can get away with setting TTL's to 0 in a closed environment, but this also means you need to serve and manage your own internal DNS. What highly available DNS datastore will you use? What creates and destroys DNS records for your services? Are you prepared for the archaic world of DNS RFCs and server implementations?</p>
+
+<p>Actually, one of the biggest drawbacks of DNS for service discovery is that DNS was designed for a world in which we used standard ports for our services. HTTP is on port 80, SSH is on port 22, and so on. In that world, all you need is the IP of the host for the service, which is what an A record gives you. Today, even with private NATs and in some cases with IPv6, our services will listen on completely non-standard, sometimes random ports. Especially with Docker, we have many applications running on the same host.</p>
+
+<p>You may be familiar with SRV records, or "service" records, which were designed to address this problem by providing the port as well as the IP in query responses. At least in terms of a data model, this brings DNS closer to addressing modern service discovery.</p>
+
+<p>Unfortunately, SRV records alone are basically dead on arrival. Have you ever used a library or API to create a socket connection that didn't ask for the port? Where do you tell it to do an SRV record lookup? You don't. You can't. It's too late. Either software explicitly supports SRV records, or DNS is effectively just a tool for resolving names to host IPs.</p>
+
+<p>Despite all this, DNS is still a marvel of engineering, and even SRV records will be useful to us yet. But for all these reasons, on top of the demands of building distributed systems, most large tech companies went down a different path.</p>
+
+<h2 id="rise-of-the-lock-service">Rise of the Lock Service</h2>
+
+<p>In 2006, Google released <a href="http://static.googleusercontent.com/media/research.google.com/en/us/archive/chubby-osdi06.pdf">a paper describing Chubby</a>, their distributed lock service. It implemented distributed consensus based on Paxos to provide a consistent, partition-tolerant (CP in CAP theorem) key-value store that could be used for coordinating leader elections, resource locking, and reliable low-volume storage. They began to use this for internal name resolution instead of DNS.</p>
+
+<p>Eventually, the paper inspired an open source equivalent of Chubby called <a href="http://zookeeper.apache.org">Zookeeper</a> that spun out of the Hadoop Apache project. This became the de facto standard lock server in the open source world, mainly because there were no alternatives with the same properties of high availability and reliability over performance. The Paxos consensus algorithm was also non-trivial to implement.</p>
+
+<p>Zookeeper provides similar semantics as Chubby for coordinating distributed systems, and being a consistent and highly available key-value store makes it an ideal cluster configuration store and directory of services. It's become a dependency to many major projects that require distributed coordination, including Hadoop, Storm, Mesos, Kafka, and others. Not surprisingly, it's used in mostly other Apache projects, often deployed in larger tech companies. It is quite heavyweight and not terribly accessible to "everyday" developers.</p>
+
+<p>About a year ago, a simpler alternative to the Paxos algorithm was published called <a href="http://raftconsensus.github.io/">Raft</a>. This set the stage for a real Zookeeper alternative and, sure enough, <a href="https://github.com/coreos/etcd">etcd</a> was soon introduced by CoreOS. Besides being based on a simpler consensus algorithm, etcd is overall simpler. It's written in Go and lets you use HTTP to interact with it. I was extremely excited by etcd and used it in the initial architecture for Flynn.</p>
+
+<p>Today there's also <a href="http://www.consul.io/">Consul</a> by Hashicorp, which builds on the ideas of etcd. I specifically explore Consul and lock servers more in my next post.</p>
+
+<h2 id="service-discovery-solutions">Service Discovery Solutions</h2>
+
+<p>Both Consul and etcd advertise themselves as service discovery solutions. Unfortunately, that's not entirely true. They're great service <em>directories</em>. But this is just part of a service discovery solution. So what's missing?</p>
+
+<p>We're missing exactly how to get all our software, whether custom services or off-the-shelf software, to integrate with and use the service directory. This is particularly interesting to the Docker community, which ideally has portable solutions for anything that can run in a container.</p>
+
+<p>A comprehensive solution to service discovery will have three legs:</p>
+
+<ul>
+  <li>A consistent (ideally), highly available service <em>directory</em></li>
+  <li>A mechanism to <em>register</em> services and monitor service <em>health</em></li>
+  <li>A mechanism to <em>lookup and connect</em> to services</li>
+</ul>
+
+<p>We've got good technology for the first leg, but the remaining legs, despite how they sound, aren't exactly trivial. Especially when ideally you want them to be automatic and "non-invasive." In other words, they work with non-cooperating software, not designed for a service discovery system. Luckily, Docker has both increased the demand for these properties and makes them easier to solve.</p>
+
+<p>In a world where you have lots of services coming and going across many hosts, service discovery is extremely valuable, if not necessary. Even in smaller systems, a solid service discovery system should reduce the effort in configuring and connecting services together to nearly nothing. Adding the responsibility of service discovery to configuration management tools, or using a centralized message queue for everything are all-to-common alternatives that we know just don't scale.</p>
+
+<p>My goal with these posts is to help you understand and arrive at a good idea of what a service discovery system should actually encompass. The next few posts will take a deeper look at each of the above mentioned legs, touching on various approaches, and ultimately explaining what I ended up doing for my soon-to-be-released project, Consulate.</p>
+
+
+          </article>
+          <a href="/blog/2014/07/29/understanding-modern-service-discovery-with-docker/#disqus_thread">Comments</a>
+        </div>
+    </div>
+</div>
+</section>
+
+
+<section class="alternate">
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+        <ul class="pager article">
+          <li class="previous">
+            <a href="/blog/page4/">&larr; Older</a>
+          </li>
+
+          <li class="next">
+            <a href="/blog/page2/">Newer &rarr;</a>
+          </li>
+        </ul>
+        </div>
+    </div>
+</div>
+</section>
+
+</main>
+
+
+
+    <footer>
+      <div class="container clearfix">
+        &copy; 2017 Jeff Lindsay
+      </div>
+    </footer>
+
+  </div>
+  <script src="/javascripts/all.js"></script>
+  <script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+        <script type="text/javascript">
+        try {
+        var pageTracker = _gat._getTracker("UA-6824126-1");
+        pageTracker._trackPageview();
+        } catch(err) {}</script>
+    <!--script type="text/javascript">
+      var host = "progrium.com";
+      if ((host == window.location.host) && (window.location.protocol != "https:"))
+        window.location.protocol = "https";
+    </script-->
+    <script type="text/javascript">
+      
+    </script>
+  </body>
+</html>

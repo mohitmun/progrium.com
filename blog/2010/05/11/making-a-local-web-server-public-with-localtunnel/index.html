@@ -1,0 +1,154 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Making a local web server public with localtunnel :: Jeff Lindsay, Open source hacker</title>
+    <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/blog/atom.xml" />
+    <link rel="shortcut icon" type="image/x-icon" href="/images/JeffLindsayDeluxe.png" />
+    <link href='https://fonts.googleapis.com/css?family=Dosis:400,300,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700|Lora:400,700,400italic|Vollkorn:400,700' rel='stylesheet' type='text/css'>
+    <link href="/stylesheets/all.css" rel="stylesheet" />
+    
+  </head>
+  <body>
+  <div id="wrapper">
+
+    <header>
+  <div class="container">
+  <div class="row">
+      <div class="col-lg-8 col-lg-offset-1">
+        You're reading the <a href="/blog">blog</a> of Jeff Lindsay (<a href="http://twitter.com/progrium">@progrium</a>). There is also his <a href="/wiki">wiki</a>.
+      </div>
+  </div>
+</div>
+</header>
+
+<main id="main" role="main">
+  <section>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-1">
+          <article>
+            <div class="meta">
+                <div class="date">
+                    <span class="month">May</span>
+                    <span class="day">11</span>
+                    <span class="year">2010</span>
+                </div>
+            </div>
+            <h1><a href="/blog/2010/05/11/making-a-local-web-server-public-with-localtunnel/">Making a local web server public with localtunnel</a></h1>
+            <p>These days it's fairly common to run a local environment for web development. Whether you're running Apache, Mongrel, or the App Engine SDK, we're all starting to see the benefits of having a production-like environment right there on your laptop so you can iteratively code and debug your app without deploying live, or even needing the Internet.</p>
+
+<p>However, with the growing popularity of callbacks and <a href="http://webhooks.org">webhooks</a>, you can only really debug if your script is live and on the Internet. There are also other cases where you need to make what are normally private and/or local web servers public, such as various kinds of testing or quick public demos. Demos are a surprisingly common case, especially for multi-user systems ("Man, I wish I could have you join this chat room app I'm working on, but it's only running on my laptop").</p>
+
+<p>The solution is obvious, right? SSH remote forwarding, or reverse tunneling. Use a magical set of options with SSH with a public server you have SSH access to, and set up a tunnel from that machine to your local machine. When people connect to a port on your public machine, it gets forwarded to a local port on your machine, looking as if that port was on a public IP.</p>
+
+<p>The idea is great, but it's a hassle to set up. You need to make sure sshd is set up properly in order to make a public tunnel on the remote machine, or you need to set up two tunnels, one from your machine to a private port on the remote machine, and then another on the remote machine from a public port to the private port (that forwards to your machine).</p>
+
+<p>In short, it's too much of a hassle to consider it a quick and easy option. Here is the quick and easy option:</p>
+
+<pre class="highlight plaintext"><code>$ localtunnel 8080
+</code></pre>
+
+<p>And you're done! With localtunnel, it's so simple to set this up, it's almost fun to do. What's more is that the publicly accessible URL has a nice hostname and uses port 80, no matter what port its on locally. And it tells you what this URL is when you start localtunnel:</p>
+
+<pre class="highlight plaintext"><code>$ localtunnel 8080
+Port 8080 is now publicly accessible from http://8bv2.localtunnel.com ...
+</code></pre>
+
+<p>What's going on behind the scenes is a web server component running on localtunnel.com. It serves two purposes: a virtual host reverse proxy to the port forward, and a tunnel register API (try going to <a href="http://open.localtunnel.com">http://open.localtunnel.com</a>). This simple API allocates a port to tunnel on, and gives the localtunnel client command the information it needs to set up an SSH tunnel for you. The localtunnel command just wraps an SSH library and does this register call.</p>
+
+<p>Of course, there's also the authentication part. As a free, public service, we don't want to just give everybody SSH access to this machine (as it may seem). The user localtunnel on that box is made just for this service. It has no shell. It only has a home directory with an authorized_keys file. We require you to upload a public key for authentication, and we also mark that key with options that say you can only do port forwarding. Although, it can't be used for arbitrary port forwarding… because it's only a private port on the remote side, it can only be used with the special reverse proxy.</p>
+
+<p>So there it is. <a href="http://github.com/progrium/localtunnel">And the code is on GitHub.</a> You might notice the server is in Python and the client in Ruby. Why? It just made sense. Python has Twisted, which I like for server stuff. And Ruby is great for command line scripts, and has a nice SSH library. In the end, it doesn't matter what it's written in. Ultimately it's a Unix program.</p>
+
+<p>Enjoy!</p>
+
+          </article>
+        </div>
+
+        <div class="col-lg-3" id="sidebar">
+    <img src="https://dl.dropboxusercontent.com/u/2096290/Blog/progrium2016.png" id="photo" title="Jeff Lindsay" />
+    <p>
+        Jeff Lindsay is a design-minded software programmer living in Austin, Texas. 
+    </p>
+    <p>
+        He founded <a href="http://gliderlabs.com">Glider Labs</a>, an open source innovation lab.
+        There he writes <a href="http://gliderlabs.com/projects">open source developer infrastructure</a> 
+        to make the world more programmable.
+    </p>
+    <p><a href="/wiki/InfluenceAndAffiliations/">Learn more about Jeff.</a></p>
+    <h5>
+      <a rel="me" href="https://twitter.com/progrium"><i class="fa fa-twitter-square fa-2x"></i></a>
+      <a rel="me" href="https://github.com/progrium"><i class="fa fa-github fa-2x"></i></a>
+      <a ref="me" href="https://instagram.com/progrium"><i class="fa fa-instagram fa-2x"></i></a>
+      <a ref="me" href="https://vimeo.com/progrium"><i class="fa fa-vimeo-square fa-2x"></i></a>
+    </h5>
+</div>
+
+    </div>
+</div>
+</section>
+<section class="subscribe" style="padding: 20px 0;">
+  <div class="row">
+  <div class="col-lg-8 col-lg-offset-1">
+    <i class="fa fa-envelope"></i>
+    <a href="http://eepurl.com/bUo8Rb">Subscribe</a> to get future blog posts sent to you via email.
+  </div>
+  </div>
+</section>
+
+<section class="alternate">
+<div class="container">
+  <div class="row">
+  <div id="disqus_thread" class="col-lg-8 col-lg-offset-1"></div>
+  <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'progrium'; // required: replace example with your forum shortname
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </div>
+</div>
+</section>
+
+</main>
+
+
+
+    <footer>
+      <div class="container clearfix">
+        &copy; 2017 Jeff Lindsay
+      </div>
+    </footer>
+
+  </div>
+  <script src="/javascripts/all.js"></script>
+  <script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+        <script type="text/javascript">
+        try {
+        var pageTracker = _gat._getTracker("UA-6824126-1");
+        pageTracker._trackPageview();
+        } catch(err) {}</script>
+    <!--script type="text/javascript">
+      var host = "progrium.com";
+      if ((host == window.location.host) && (window.location.protocol != "https:"))
+        window.location.protocol = "https";
+    </script-->
+    <script type="text/javascript">
+      
+    </script>
+  </body>
+</html>

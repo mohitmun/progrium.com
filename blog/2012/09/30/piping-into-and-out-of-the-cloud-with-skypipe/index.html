@@ -1,0 +1,213 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Piping into and out of the cloud with skypipe :: Jeff Lindsay, Open source hacker</title>
+    <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/blog/atom.xml" />
+    <link rel="shortcut icon" type="image/x-icon" href="/images/JeffLindsayDeluxe.png" />
+    <link href='https://fonts.googleapis.com/css?family=Dosis:400,300,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700|Lora:400,700,400italic|Vollkorn:400,700' rel='stylesheet' type='text/css'>
+    <link href="/stylesheets/all.css" rel="stylesheet" />
+    
+  </head>
+  <body>
+  <div id="wrapper">
+
+    <header>
+  <div class="container">
+  <div class="row">
+      <div class="col-lg-8 col-lg-offset-1">
+        You're reading the <a href="/blog">blog</a> of Jeff Lindsay (<a href="http://twitter.com/progrium">@progrium</a>). There is also his <a href="/wiki">wiki</a>.
+      </div>
+  </div>
+</div>
+</header>
+
+<main id="main" role="main">
+  <section>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-1">
+          <article>
+            <div class="meta">
+                <div class="date">
+                    <span class="month">Sep</span>
+                    <span class="day">30</span>
+                    <span class="year">2012</span>
+                </div>
+            </div>
+            <h1><a href="/blog/2012/09/30/piping-into-and-out-of-the-cloud-with-skypipe/">Piping into and out of the cloud with skypipe</a></h1>
+            <p><a href="https://github.com/progrium/skypipe">Skypipe</a> is a magical command line tool that lets you easily pipe data across terminal sessions regardless of whether the sessions are on the same machine, across thousands of machines, or even behind a firewall. It gives you named pipes in the sky and lets you pipe data <em>anywhere</em>.</p>
+
+<p>I built it while on vacation the last couple months. I wasn't intending
+to write software while on my trip, but I just couldn't help myself.</p>
+
+<p>Skypipe is conceptually similar to named pipes or netcat, but with more power and a simpler interface. Here is a basic example using skypipe as you would a regular named pipe to gzip a file across shells:</p>
+
+<pre class="highlight plaintext"><code>$ skypipe | gzip -9 -c &gt; out.gz
+</code></pre>
+
+<p>Your skypipe is now ready to receive some data from another shell process:</p>
+
+<pre class="highlight plaintext"><code>$ cat file | skypipe
+</code></pre>
+
+<p>Unlike named pipes, however, <em>this will work across any machines connected to the Internet</em>. You don't have to specify a host address or set up "listen mode" like you would with netcat. In fact, unlike netcat, which is point to point, you could use skypipe for log aggregation. Here we'll used named skypipes. Run this on several hosts:</p>
+
+<pre class="highlight plaintext"><code>$ tail -f /var/log/somefile | skypipe logs
+</code></pre>
+
+<p>Then run this on a single machine:</p>
+
+<pre class="highlight plaintext"><code>$ skypipe logs &gt; /var/log/aggregate
+</code></pre>
+
+<p>This can also broadcast to multiple hosts. With the above, you can "listen in" by running this from your laptop, even while behind a NAT:</p>
+
+<pre class="highlight plaintext"><code>$ skypipe logs
+</code></pre>
+
+<p>You can also temporarily store data or files in the pipe, even several files, until you pull them out. On one machine load some files into a named skypipe:</p>
+
+<pre class="highlight plaintext"><code>$ cat file_a | skypipe files
+$ cat file_b | skypipe files
+</code></pre>
+
+<p>Now, from somewhere else, pull them out in order:</p>
+
+<pre class="highlight plaintext"><code>$ skypipe files &gt; new_file_a
+$ skypipe files &gt; new_file_b
+</code></pre>
+
+<p>Lastly, you can use skypipe like the channel primitive in Go for coordinating between shell scripts. As a simple example, we'll use skypipe to wait for an event triggered by another script:</p>
+
+<pre class="highlight shell"><code><span class="c">#!/bin/bash</span>
+<span class="nb">echo</span> <span class="s2">"I'm going to wait until triggered"</span>
+skypipe trigger
+<span class="nb">echo</span> <span class="s2">"I was triggered!"</span>
+</code></pre>
+
+<p>Triggering is just sending an EOF over the pipe, causing the listening skypipe to terminate. We can do this with a simple idiom:</p>
+
+<pre class="highlight plaintext"><code>$ echo | skypipe trigger
+</code></pre>
+
+<h3 id="how-does-this-magic-work">How does this magic work?</h3>
+
+<p>You'll need a free <a href="https://www.dotcloud.com/">Dotcloud</a> account to use skypipe, but you don't need to know anything about using Dotcloud to use skypipe.</p>
+
+<p>When you first use skypipe it will want you to run a setup command (<code>skypipe --setup</code>). This will deploy a very simple messaging server to Dotcloud. From then on, skypipe will use your account to transparently find and use this server, no matter where you are. The server is managed automatically and runs on Dotcloud free of charge, so you never need to think about it.</p>
+
+<h3 id="software-with-a-service">Software with a service!</h3>
+
+<p>This is a new paradigm of creating tools that transparently leverage the cloud to create magical experiences. It's not quite software as a service, it's software <em>with</em> a service. Nobody is using a shared, central server, and no one needs to setup or manage their own server. The <em>software</em> deploys and manages its own server for you.</p>
+
+<p>Thanks to platforms like Heroku and Dotcloud, we can now build software leveraging features of software as a service that is <em>packaged and distributed like normal open source software</em>.</p>
+
+<p>I'm excited to see what else can be done with this pattern. Naturally, I'm already thinking about a number of other potential uses.</p>
+
+<h3 id="using-skypipe-and-getting-involved">Using skypipe and getting involved</h3>
+
+<p>Skypipe is still an alpha piece of software. Be warned, there are some rough edges. That said, you can install skypipe with pip:</p>
+
+<pre class="highlight plaintext"><code>$ pip install skypipe
+</code></pre>
+
+<p>The user experience is not yet entirely optimized. One of the biggest issues is that it needs to check for the server on every use. This can be done less often and cached, which would make it much snappier and on par with most command line utilities.</p>
+
+<p>This and a few other issues are already tracked in <a href="https://github.com/progrium/skypipe/issues">Github Issues</a>; feel free to take a whack at them. The codebase is intentionally small, documented, and written to be read, although there are no tests yet.</p>
+
+<p>The project also depends on ZeroMQ, which requires a C extension to be compiled. Even using the pyzmq-static package, you still need certain header files (python.h at the very least) to install skypipe, and not every environment has these. Ideally, I'd like to find a way to package skypipe in a way that includes all its dependencies. Perhaps <a href="http://www.pyinstaller.org/">PyInstaller</a> can help with this.</p>
+
+<p>Another feature I'm sure a lot of people will want (or complain about) is being able to run your own server and ignore the software with a service aspect. Since the server is packaged with the client, this is not far off from happening. Somebody just needs to make it happen.</p>
+
+<p>Contribution ideas aside, I'm hoping skypipe will be useful to others besides myself. I was really going for a magical tool. I think a big part of this magic is the use of software with a service, which I consider a bit novel in itself. What do you think?</p>
+
+          </article>
+        </div>
+
+        <div class="col-lg-3" id="sidebar">
+    <img src="https://dl.dropboxusercontent.com/u/2096290/Blog/progrium2016.png" id="photo" title="Jeff Lindsay" />
+    <p>
+        Jeff Lindsay is a design-minded software programmer living in Austin, Texas. 
+    </p>
+    <p>
+        He founded <a href="http://gliderlabs.com">Glider Labs</a>, an open source innovation lab.
+        There he writes <a href="http://gliderlabs.com/projects">open source developer infrastructure</a> 
+        to make the world more programmable.
+    </p>
+    <p><a href="/wiki/InfluenceAndAffiliations/">Learn more about Jeff.</a></p>
+    <h5>
+      <a rel="me" href="https://twitter.com/progrium"><i class="fa fa-twitter-square fa-2x"></i></a>
+      <a rel="me" href="https://github.com/progrium"><i class="fa fa-github fa-2x"></i></a>
+      <a ref="me" href="https://instagram.com/progrium"><i class="fa fa-instagram fa-2x"></i></a>
+      <a ref="me" href="https://vimeo.com/progrium"><i class="fa fa-vimeo-square fa-2x"></i></a>
+    </h5>
+</div>
+
+    </div>
+</div>
+</section>
+<section class="subscribe" style="padding: 20px 0;">
+  <div class="row">
+  <div class="col-lg-8 col-lg-offset-1">
+    <i class="fa fa-envelope"></i>
+    <a href="http://eepurl.com/bUo8Rb">Subscribe</a> to get future blog posts sent to you via email.
+  </div>
+  </div>
+</section>
+
+<section class="alternate">
+<div class="container">
+  <div class="row">
+  <div id="disqus_thread" class="col-lg-8 col-lg-offset-1"></div>
+  <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'progrium'; // required: replace example with your forum shortname
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </div>
+</div>
+</section>
+
+</main>
+
+
+
+    <footer>
+      <div class="container clearfix">
+        &copy; 2017 Jeff Lindsay
+      </div>
+    </footer>
+
+  </div>
+  <script src="/javascripts/all.js"></script>
+  <script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+        <script type="text/javascript">
+        try {
+        var pageTracker = _gat._getTracker("UA-6824126-1");
+        pageTracker._trackPageview();
+        } catch(err) {}</script>
+    <!--script type="text/javascript">
+      var host = "progrium.com";
+      if ((host == window.location.host) && (window.location.protocol != "https:"))
+        window.location.protocol = "https";
+    </script-->
+    <script type="text/javascript">
+      
+    </script>
+  </body>
+</html>

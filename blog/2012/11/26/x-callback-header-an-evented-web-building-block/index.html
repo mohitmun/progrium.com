@@ -1,0 +1,212 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>X-Callback Header: Evented Web Building Block :: Jeff Lindsay, Open source hacker</title>
+    <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/blog/atom.xml" />
+    <link rel="shortcut icon" type="image/x-icon" href="/images/JeffLindsayDeluxe.png" />
+    <link href='https://fonts.googleapis.com/css?family=Dosis:400,300,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700|Lora:400,700,400italic|Vollkorn:400,700' rel='stylesheet' type='text/css'>
+    <link href="/stylesheets/all.css" rel="stylesheet" />
+    
+  </head>
+  <body>
+  <div id="wrapper">
+
+    <header>
+  <div class="container">
+  <div class="row">
+      <div class="col-lg-8 col-lg-offset-1">
+        You're reading the <a href="/blog">blog</a> of Jeff Lindsay (<a href="http://twitter.com/progrium">@progrium</a>). There is also his <a href="/wiki">wiki</a>.
+      </div>
+  </div>
+</div>
+</header>
+
+<main id="main" role="main">
+  <section>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-1">
+          <article>
+            <div class="meta">
+                <div class="date">
+                    <span class="month">Nov</span>
+                    <span class="day">26</span>
+                    <span class="year">2012</span>
+                </div>
+            </div>
+            <h1><a href="/blog/2012/11/26/x-callback-header-an-evented-web-building-block/">X-Callback Header: Evented Web Building Block</a></h1>
+            <div class="alert alert-info">
+Since this posting, we decided to adopt "best current
+practice" and drop the X- prefix as described in <a href="http://tools.ietf.org/html/rfc6648">RFC 6648</a>. Future posts refer to this as the Callback header.
+</div>
+<p>Webhooks is the simple concept of HTTP callbacks. It expands on the simple request/response model of HTTP, giving you the semantics of <a href="http://j.mp/10EitT8">callbacks in programming</a>. Request/response gives you one response for one request in one synchronous operation. It's like invoking a function and getting a return value. With callbacks, after you register a callback, the callback will receive one or more invocations, perhaps minutes or hours apart.</p>
+
+<p>Callbacks are a necessary component of any evented or reactor-based system, like Node.js, Twisted, or EventMachine. So, naturally, HTTP callbacks are necessary to achieve <a href="http://progrium.com/blog/2012/11/19/from-webhooks-to-the-evented-web/">the Evented Web</a>.</p>
+
+<p>Modeling callbacks in HTTP is somewhat straightforward. The callback is a URL. You perform an HTTP request against an application to register a callback URL. The application then performs an HTTP request to that URL to invoke that callback.</p>
+
+<p>Those high-level requirements are enough to set anybody in the right direction to effectively implement webhooks or HTTP callbacks for their application. The problem is that now every application implements the specifics differently. While this is fine to provide a callback paradigm for each application, it doesn't let us <em>build</em> on this paradigm. The Evented Web needs to agree on some standards, and the X-Callback header is one of those standards.</p>
+
+<h3 id="x-callback-header">X-Callback Header</h3>
+
+<p>The X-Callback header is a proposal for a common way to describe HTTP callbacks, primarily in the case of registering them. It does not get into the specifics for different ways of using HTTP callbacks, so it's more of a building block for APIs or larger protocols such as HTTP Subscriptions, which I mentioned <a href="http://progrium.com/blog/2012/11/19/from-webhooks-to-the-evented-web/">in my previous post</a>.</p>
+
+<p>Here's what it looks like to use X-Callback:</p>
+
+<pre class="highlight plaintext"><code>X-Callback: &lt;http://example.com/callback&gt;; method="post"
+</code></pre>
+
+<p>The format is directly borrowed from the <a href="http://www.w3.org/Protocols/9707-link-header.html">Link header</a> used for responses. You provide a URL and then optional key-value parameters. In the case above, the HTTP method for invoking the callback was specified as a parameter.</p>
+
+<p>Here is a more formal description of the header:</p>
+
+<pre class="highlight plaintext"><code>X-Callback     = "X-Callback" ":" #("&lt;" URI "&gt;" *( ";" callback-param ) )
+callback-param  = token [ "=" ( token | quoted-string ) ]
+</code></pre>
+
+<p>Since this is just the beginning of the conversation, there are no "built-in" callback parameters in this definition. They're effectively all extensions. However, these are what I'd propose for standard parameters:</p>
+
+<ul>
+  <li><strong>method</strong>: The HTTP method preferred for invoking this callback. Servers can ignore or override based on their policies, but this lets the requester optionally state preference.</li>
+  <li><strong>secret</strong>: The secret to be used for signing callback requests. More on this in the next section.</li>
+  <li><strong>rel</strong>: The relationship of this callback to this request, similar to the rel of the Link header. This lets you specify the role of this callback, which is useful when multiple callbacks are provided. It effectively lets you classify the callbacks.</li>
+</ul>
+
+<h3 id="authenticating-with-signatures">Authenticating with Signatures</h3>
+
+<p>A common pattern across most implementations of webhooks has been the use of signatures for authenticating the callback "invocation" requests. Either built-in to the X-Callback header spec or maybe as a separate extension, a standard way of providing a secret then building and including a signature would be a Good Idea. The following is a proposal based on PubSubHubbub's signature model, but is not that different from the majority of implementations out there.</p>
+
+<p>We start with a shared secret. Transmission of this secret can be done out of band (through a dashboard, for example), or the secret can be provided via the <em>secret</em> parameter of the X-Callback header during registration.</p>
+
+<p>The secret can then be used with HMAC to sign anything. In the case of callbacks, it would sign the body of the callback request body. Since you can use different hashing techniques with HMAC, the technique used is specified along with a hexadecimal digest of the HMAC signature. This is put in the X-Signature header of requests:</p>
+
+<pre class="highlight plaintext"><code>X-Signature: sha1=0beec7b5ea3f0fdbc95d0dd47f3c5bc275da8a33
+</code></pre>
+
+<p>Now the callback handler can rebuild this signature knowing the secret and having the content body and the hash technique. Authenticating is then comparing the built signature with the one provided in the X-Signature header.</p>
+
+<p>Signing lets the callback handler be more certain of the source without requiring SSL. Signatures become much less necessary if all requests are using HTTPS. But having this simple complement to X-Callback makes it easy when you need it, and may help unify all the different approaches that are all effectively doing the same thing.</p>
+
+<h3 id="example-callback-flow">Example Callback Flow</h3>
+
+<p>Let's use all this in an example, showing you the actual HTTP requests. First, we're going to register a callback at a particular endpoint:</p>
+
+<pre class="highlight plaintext"><code>POST /callbacks/register HTTP/1.1
+Host: server-example.com
+X-Callback: &lt;http://example.com/callback&gt;; method="post"; secret="opensesame"
+Content-Length: 0
+</code></pre>
+
+<p>The server can respond however it likes since X-Callback header doesn't specify anything more than how to hand the server a callback. Let's assume it returned 200 OK.</p>
+
+<p>Now, whenever it likes, the server is going to be performing an HTTP POST on the callback URL. Since a secret was provided, the server will be providing a signature using the X-Signature header. Here's what one of those requests might look like:</p>
+
+<pre class="highlight plaintext"><code>POST /callback HTTP/1.1
+Host: example.com
+Content-Type: application/json
+Content-Length: 26
+X-Signature: sha1=76afe1da675cf6d3d59c71a4af44dafc69fd03f0
+
+{"payload": "Hello world"}
+</code></pre>
+
+<p>You'll notice we've stayed completely out of the content layer of HTTP. This is quite intentional. This gives implementors lots of flexibility and keeps this a "pure" extension to HTTP.</p>
+
+<h3 id="a-building-block">A Building Block</h3>
+
+<p>As I've mentioned, this header is intended to be used in APIs and protocols that use callbacks in different ways. The obvious example is HTTP Subscriptions, which will let you subscribe to events using HTTP callbacks.</p>
+
+<p>Another example, which I'll also talk about soon, is HTTP Response Redirection. Regular <a href="http://en.wikipedia.org/wiki/URL_redirection#HTTP_status_codes_3xx">HTTP Redirection</a> lets the server redirect the client's request to another URL, whereas Response Redirection lets the client redirect where the server sends the response using an HTTP callback.</p>
+
+<p>The X-Callback header is simple, focused, and content neutral. Hopefully this makes it a powerful building block for other technologies of the Evented Web.</p>
+
+          </article>
+        </div>
+
+        <div class="col-lg-3" id="sidebar">
+    <img src="https://dl.dropboxusercontent.com/u/2096290/Blog/progrium2016.png" id="photo" title="Jeff Lindsay" />
+    <p>
+        Jeff Lindsay is a design-minded software programmer living in Austin, Texas. 
+    </p>
+    <p>
+        He founded <a href="http://gliderlabs.com">Glider Labs</a>, an open source innovation lab.
+        There he writes <a href="http://gliderlabs.com/projects">open source developer infrastructure</a> 
+        to make the world more programmable.
+    </p>
+    <p><a href="/wiki/InfluenceAndAffiliations/">Learn more about Jeff.</a></p>
+    <h5>
+      <a rel="me" href="https://twitter.com/progrium"><i class="fa fa-twitter-square fa-2x"></i></a>
+      <a rel="me" href="https://github.com/progrium"><i class="fa fa-github fa-2x"></i></a>
+      <a ref="me" href="https://instagram.com/progrium"><i class="fa fa-instagram fa-2x"></i></a>
+      <a ref="me" href="https://vimeo.com/progrium"><i class="fa fa-vimeo-square fa-2x"></i></a>
+    </h5>
+</div>
+
+    </div>
+</div>
+</section>
+<section class="subscribe" style="padding: 20px 0;">
+  <div class="row">
+  <div class="col-lg-8 col-lg-offset-1">
+    <i class="fa fa-envelope"></i>
+    <a href="http://eepurl.com/bUo8Rb">Subscribe</a> to get future blog posts sent to you via email.
+  </div>
+  </div>
+</section>
+
+<section class="alternate">
+<div class="container">
+  <div class="row">
+  <div id="disqus_thread" class="col-lg-8 col-lg-offset-1"></div>
+  <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'progrium'; // required: replace example with your forum shortname
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </div>
+</div>
+</section>
+
+</main>
+
+
+
+    <footer>
+      <div class="container clearfix">
+        &copy; 2017 Jeff Lindsay
+      </div>
+    </footer>
+
+  </div>
+  <script src="/javascripts/all.js"></script>
+  <script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+        <script type="text/javascript">
+        try {
+        var pageTracker = _gat._getTracker("UA-6824126-1");
+        pageTracker._trackPageview();
+        } catch(err) {}</script>
+    <!--script type="text/javascript">
+      var host = "progrium.com";
+      if ((host == window.location.host) && (window.location.protocol != "https:"))
+        window.location.protocol = "https";
+    </script-->
+    <script type="text/javascript">
+      
+    </script>
+  </body>
+</html>

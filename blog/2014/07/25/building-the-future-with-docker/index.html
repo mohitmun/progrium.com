@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Building the Future with Docker :: Jeff Lindsay, Open source hacker</title>
+    <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/blog/atom.xml" />
+    <link rel="shortcut icon" type="image/x-icon" href="/images/JeffLindsayDeluxe.png" />
+    <link href='https://fonts.googleapis.com/css?family=Dosis:400,300,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700|Lora:400,700,400italic|Vollkorn:400,700' rel='stylesheet' type='text/css'>
+    <link href="/stylesheets/all.css" rel="stylesheet" />
+    
+  </head>
+  <body>
+  <div id="wrapper">
+
+    <header>
+  <div class="container">
+  <div class="row">
+      <div class="col-lg-8 col-lg-offset-1">
+        You're reading the <a href="/blog">blog</a> of Jeff Lindsay (<a href="http://twitter.com/progrium">@progrium</a>). There is also his <a href="/wiki">wiki</a>.
+      </div>
+  </div>
+</div>
+</header>
+
+<main id="main" role="main">
+  <section>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-1">
+          <article>
+            <div class="meta">
+                <div class="date">
+                    <span class="month">Jul</span>
+                    <span class="day">25</span>
+                    <span class="year">2014</span>
+                </div>
+            </div>
+            <h1><a href="/blog/2014/07/25/building-the-future-with-docker/">Building the Future with Docker</a></h1>
+            <p>Before Docker, a handful of colleagues and I were dealing with a typical service-oriented system on EC2. It was typical in that it was quite far from ideal. Deploying components took too long. Getting new components in production was a nightmare. It was resource inefficient and harder to manage than it needed to be. It was big and complicated, and tightly-coupled in all the wrong places. It was hard to make changes to, especially removing legacy and broken code. Every component was different. Developers could only run a few components at a time locally, which was nothing like production. System-level integration testing was near impossible. On and on…</p>
+
+<p>We built and scaled individual components and solved individual problems to satisfy product requirements. As such, the company continued to be successful. But the system as a whole, which had the most influence on the developer and operator experience, was not improving fast enough to keep up.</p>
+
+<p>We sat down and started to just sketch out ideas of what an ideal system would look like. What would the perfect developer experience be like? How could you keep operators from falling into reactive mode? What would facilitate developers and operators to better work together? What infrastructure would you need to employ everything we knew to be best practice? What were large-scale systems like Google and Twitter doing for these that we weren't? How could you collapse these requirements into the simplest system possible?</p>
+
+<p>For the past three years, I've been focusing on building and refining that ideal system. The full picture is still only in my head, but over time it's been getting validated as new tools come out, either by me or by others. It's been further validated and refined as I talk and work with various companies, both providers and consumers in this space.</p>
+
+<p>It turns out the ideal involves a different way of thinking about systems than common system architecture and operations. Though, it's not <em>so</em> different from the way modern large-scale systems like Netflix and Google have evolved. The difference is in simplicity, orthogonality, and, most important, the overall experience design.</p>
+
+<p>I don't just have a system in mind, I have particular kind of experience with that system in mind.</p>
+
+<p>I played a very minor role in the creation and success of Docker. To me, it was the first necessary, and maybe most pivotal component in making a reasonable approximation of this ideal system. Docker doesn't solve every problem, but it's not supposed to. It is the meta-primitive needed to build the rest of the primitives for this system. Docker is huge, but it's just the foundation.</p>
+
+<p>I don't know how far I'll be able to take this obsessive drive to flesh out the rest of this ideal system. Luckily, I've found a lot of supporters that have sponsored my work in various ways. Without them, I would likely not even be working on these types of technologies.</p>
+
+<p>Anyway, a couple weeks ago <a href="http://www.centurylinklabs.com/the-future-of-docker/">CenturyLink Labs did an interview with me</a> that captures a slice of the specifics in what I'm talking about. It covers some history, but it also gets into my roadmap, which I'm hoping to share more details on in upcoming posts. The big milestone for me is Manifold. As a stepping stone, the project Consulate should have a big impact in the Docker community. Some of the other projects mentioned like Duplex and Configurator are also just as important to me.</p>
+
+<iframe width="640" height="360" src="//www.youtube.com/embed/aBgObyaNkdc" frameborder="0" allowfullscreen=""></iframe>
+
+          </article>
+        </div>
+
+        <div class="col-lg-3" id="sidebar">
+    <img src="https://dl.dropboxusercontent.com/u/2096290/Blog/progrium2016.png" id="photo" title="Jeff Lindsay" />
+    <p>
+        Jeff Lindsay is a design-minded software programmer living in Austin, Texas. 
+    </p>
+    <p>
+        He founded <a href="http://gliderlabs.com">Glider Labs</a>, an open source innovation lab.
+        There he writes <a href="http://gliderlabs.com/projects">open source developer infrastructure</a> 
+        to make the world more programmable.
+    </p>
+    <p><a href="/wiki/InfluenceAndAffiliations/">Learn more about Jeff.</a></p>
+    <h5>
+      <a rel="me" href="https://twitter.com/progrium"><i class="fa fa-twitter-square fa-2x"></i></a>
+      <a rel="me" href="https://github.com/progrium"><i class="fa fa-github fa-2x"></i></a>
+      <a ref="me" href="https://instagram.com/progrium"><i class="fa fa-instagram fa-2x"></i></a>
+      <a ref="me" href="https://vimeo.com/progrium"><i class="fa fa-vimeo-square fa-2x"></i></a>
+    </h5>
+</div>
+
+    </div>
+</div>
+</section>
+<section class="subscribe" style="padding: 20px 0;">
+  <div class="row">
+  <div class="col-lg-8 col-lg-offset-1">
+    <i class="fa fa-envelope"></i>
+    <a href="http://eepurl.com/bUo8Rb">Subscribe</a> to get future blog posts sent to you via email.
+  </div>
+  </div>
+</section>
+
+<section class="alternate">
+<div class="container">
+  <div class="row">
+  <div id="disqus_thread" class="col-lg-8 col-lg-offset-1"></div>
+  <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'progrium'; // required: replace example with your forum shortname
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </div>
+</div>
+</section>
+
+</main>
+
+
+
+    <footer>
+      <div class="container clearfix">
+        &copy; 2017 Jeff Lindsay
+      </div>
+    </footer>
+
+  </div>
+  <script src="/javascripts/all.js"></script>
+  <script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+        <script type="text/javascript">
+        try {
+        var pageTracker = _gat._getTracker("UA-6824126-1");
+        pageTracker._trackPageview();
+        } catch(err) {}</script>
+    <!--script type="text/javascript">
+      var host = "progrium.com";
+      if ((host == window.location.host) && (window.location.protocol != "https:"))
+        window.location.protocol = "https";
+    </script-->
+    <script type="text/javascript">
+      
+    </script>
+  </body>
+</html>

@@ -1,0 +1,149 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <title>Public Open Source Services :: Jeff Lindsay, Open source hacker</title>
+    <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/blog/atom.xml" />
+    <link rel="shortcut icon" type="image/x-icon" href="/images/JeffLindsayDeluxe.png" />
+    <link href='https://fonts.googleapis.com/css?family=Dosis:400,300,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700|Lora:400,700,400italic|Vollkorn:400,700' rel='stylesheet' type='text/css'>
+    <link href="/stylesheets/all.css" rel="stylesheet" />
+    
+  </head>
+  <body>
+  <div id="wrapper">
+
+    <header>
+  <div class="container">
+  <div class="row">
+      <div class="col-lg-8 col-lg-offset-1">
+        You're reading the <a href="/blog">blog</a> of Jeff Lindsay (<a href="http://twitter.com/progrium">@progrium</a>). There is also his <a href="/wiki">wiki</a>.
+      </div>
+  </div>
+</div>
+</header>
+
+<main id="main" role="main">
+  <section>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-1">
+          <article>
+            <div class="meta">
+                <div class="date">
+                    <span class="month">Oct</span>
+                    <span class="day">29</span>
+                    <span class="year">2009</span>
+                </div>
+            </div>
+            <h1><a href="/blog/2009/10/29/public-open-source-services/">Public Open Source Services</a></h1>
+            <p>Last night I went off and put up a wiki about an idea I've been thinking about for a while: <a href="http://poss.gliderlab.com/">public open source services</a> or POSS. Think: public services or utilities on the web run as open source.</p>
+
+<p>Unlike open source software, web services aren't just source code. They're source code that <em>runs</em>. They have to be maintained in order to keep running, and the resources they consume have to be paid for. This is why most web services are built using a business as the vehicle. This effectively constrains what you can build by framing it as something that needs to turn a profit or support you to work on it. But does it need to be that way? Can web services be built in a way that make it self-sufficient? Not needing some ambivalent leader to take responsibility for it?</p>
+
+<p>I originally blogged about it in February 2007, 6 months after I first wrote about webhooks. Unfortunately my old blog isn't online right now. Back then, I was trying to solve the administrative problem. How do you maintain the servers in an open source way? My idea then, was to build a self-managing system using something like cfengine or Puppet, where the recipes and configurations are kept with the publicly available source code. As new configurations are checked in, the server(s) adopt the new directives and continue to self-manage.</p>
+
+<p>The practicality of such a setup is a little far fetched, but seemed pretty feasible for smaller projects. However, since the release of Google App Engine, this concern for simple web applications has disappeared. Google just automates the system administration, and scaling! This means to run the app, you just have to write the code and hit deploy. That's a huge step! Administration concerns? Pretty much solved.</p>
+
+<p>The next thing is the financial concern. How do you pay for it? Or rather, how does it pay for itself? This took longer to figure out, but here we are. From the wiki essay:</p>
+
+<blockquote>
+  <p>You use the same Google Merchant account that App Engine debits as the one that accepts donations. This way no bank account is involved. Then you track the money that goes into the account (using the Google Merchant IPN equivalent). Then you look at your usage stats from the App Engine panel and predicate future usage trends. Then calculate the cost per month. Then divide the cash in the account by that and you have how long the service will run. You make this visible on all pages (at the bottom, say) that this service will run for X months, "Pay now to keep it running." You accept any amount, but you are completely clear about what the costs are. And this is all automated.</p>
+</blockquote>
+
+<p>Take the humans out of the loop!</p>
+
+<p>Then you rely on the same sort of community approach of open source to contribute to the application. Like a few members of the project community are given certain rights, some will be given permission to deploy the app from time to time for updating the running service.</p>
+
+<p>If the service isn't useful, nobody uses it, it's not paid for, it disappears. If it is useful, people will pay for it to keep it running. They are assured they are paying operating costs, which are significantly lower than most because it doesn't include paying for human resources! Volunteers might need to meddle with settings, but otherwise, the coders are in control and the community accepts or denies changes made by whoever wants them.</p>
+
+<p>So if this is interesting, read the <a href="http://poss.gliderlab.com/">full essay I wrote up on the wiki</a>. It's been my intention to prototype and validate this model with many of my projects.</p>
+
+          </article>
+        </div>
+
+        <div class="col-lg-3" id="sidebar">
+    <img src="https://dl.dropboxusercontent.com/u/2096290/Blog/progrium2016.png" id="photo" title="Jeff Lindsay" />
+    <p>
+        Jeff Lindsay is a design-minded software programmer living in Austin, Texas. 
+    </p>
+    <p>
+        He founded <a href="http://gliderlabs.com">Glider Labs</a>, an open source innovation lab.
+        There he writes <a href="http://gliderlabs.com/projects">open source developer infrastructure</a> 
+        to make the world more programmable.
+    </p>
+    <p><a href="/wiki/InfluenceAndAffiliations/">Learn more about Jeff.</a></p>
+    <h5>
+      <a rel="me" href="https://twitter.com/progrium"><i class="fa fa-twitter-square fa-2x"></i></a>
+      <a rel="me" href="https://github.com/progrium"><i class="fa fa-github fa-2x"></i></a>
+      <a ref="me" href="https://instagram.com/progrium"><i class="fa fa-instagram fa-2x"></i></a>
+      <a ref="me" href="https://vimeo.com/progrium"><i class="fa fa-vimeo-square fa-2x"></i></a>
+    </h5>
+</div>
+
+    </div>
+</div>
+</section>
+<section class="subscribe" style="padding: 20px 0;">
+  <div class="row">
+  <div class="col-lg-8 col-lg-offset-1">
+    <i class="fa fa-envelope"></i>
+    <a href="http://eepurl.com/bUo8Rb">Subscribe</a> to get future blog posts sent to you via email.
+  </div>
+  </div>
+</section>
+
+<section class="alternate">
+<div class="container">
+  <div class="row">
+  <div id="disqus_thread" class="col-lg-8 col-lg-offset-1"></div>
+  <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'progrium'; // required: replace example with your forum shortname
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </div>
+</div>
+</section>
+
+</main>
+
+
+
+    <footer>
+      <div class="container clearfix">
+        &copy; 2017 Jeff Lindsay
+      </div>
+    </footer>
+
+  </div>
+  <script src="/javascripts/all.js"></script>
+  <script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+        <script type="text/javascript">
+        try {
+        var pageTracker = _gat._getTracker("UA-6824126-1");
+        pageTracker._trackPageview();
+        } catch(err) {}</script>
+    <!--script type="text/javascript">
+      var host = "progrium.com";
+      if ((host == window.location.host) && (window.location.protocol != "https:"))
+        window.location.protocol = "https";
+    </script-->
+    <script type="text/javascript">
+      
+    </script>
+  </body>
+</html>
